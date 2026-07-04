@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">戀語</string>
+    <string name="dialog_auto_start_title">需要自啟動權限</string>
+    <string name="dialog_auto_start_message">為了讓虛擬戀人能夠持續給你發送消息，需要允許應用自啟動。請在設置中開啟。</string>
+    <string name="dialog_go_settings">去設置</string>
+    <string name="dialog_later">稍後</string>
+    <string name="dialog_battery_title">需要電池優化白名單</string>
+    <string name="dialog_battery_message">為了防止系統殺死後台服務，導致虛擬戀人無法發送消息，請將應用加入電池優化白名單。</string>
+    <string name="nav_love">戀語</string>
+    <string name="nav_contacts">通訊錄</string>
+    <string name="nav_profile">我</string>
+</resources>

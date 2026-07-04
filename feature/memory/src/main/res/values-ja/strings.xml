@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memory_management">記憶管理</string>
+    <string name="core_memory">コア記憶</string>
+    <string name="temp_memory">一時記憶</string>
+    <string name="select_companion_hint">彼女を選択して記憶を見る</string>
+    <string name="all">すべて</string>
+    <string name="no_core_memory">コア記憶はまだありません\nもっとチャットして記憶を貯めよう</string>
+    <string name="no_temp_memory">一時記憶はまだありません\nチャット後に自動記録されます</string>
+    <string name="importance">重要度 %1$d%%</string>
+    <string name="context">コンテキスト: %1$s</string>
+    <string name="you">あなた: %1$s</string>
+    <string name="no_companions">まだ彼女がいません</string>
+    <string name="create_first">先に作成してね</string>
+    <string name="fact">事実</string>
+    <string name="emotion">感情</string>
+    <string name="preference">好み</string>
+    <string name="event">イベント</string>
+    <string name="habit">習慣</string>
+    <string name="relationship">関係</string>
+</resources>

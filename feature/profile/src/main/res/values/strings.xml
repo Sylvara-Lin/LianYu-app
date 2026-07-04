@@ -1,0 +1,207 @@
+<resources>
+    <!-- Profile Screen -->
+    <string name="profile_avatar">头像</string>
+    <string name="profile_save">保存</string>
+    <string name="profile_edit">编辑</string>
+    <string name="profile_avatar_hint">点击头像更换，点击名字编辑</string>
+    <string name="memory_management">记忆管理</string>
+    <string name="memory_management_desc">查看虚拟恋人记住的关于你的事</string>
+    <string name="api_settings">API设置</string>
+    <string name="api_settings_desc">配置AI接口</string>
+    <string name="theme_mode">主题模式</string>
+    <string name="theme_mode_desc">切换浅色/深色主题</string>
+    <string name="chat_background">聊天背景</string>
+    <string name="chat_background_desc">自定义聊天页面背景</string>
+    <string name="wechat_settings">微信设置</string>
+    <string name="wechat_settings_desc">绑定微信个人号</string>
+    <string name="qqbot_settings">QQ机器人</string>
+    <string name="qqbot_settings_desc">绑定QQ官方机器人</string>
+    <string name="coffee_title">瑞幸咖啡</string>
+    <string name="coffee_desc">AI点餐（MCP接入）</string>
+    <!-- 总设置 -->
+    <string name="general_settings">总设置</string>
+    <string name="general_settings_desc">语言、帧率、思考、TTS、Token、更新、权限、平台集成</string>
+
+    <!-- 记忆与管理 -->
+    <string name="context_memory">上下文记忆</string>
+    <string name="context_memory_desc">设置 AI 对话记忆条数</string>
+
+    <!-- AI与对话 -->
+    <string name="thinking_settings">思考设置</string>
+    <string name="thinking_enabled">已启用思考过程显示</string>
+    <string name="thinking_disabled">思考过程显示已关闭</string>
+
+    <!-- 外观与体验 -->
+    <string name="language">语言设置</string>
+    <string name="language_desc">当前为简体中文</string>
+    <string name="framerate">帧率设置</string>
+    <string name="framerate_desc">调整屏幕刷新率</string>
+    <string name="experimental_features">实验性功能</string>
+    <string name="experimental_features_desc">探索尚未正式发布的测试功能</string>
+
+    <!-- 系统与维护 -->
+    <string name="tts_settings">TTS 语音设置</string>
+    <string name="tts_settings_desc">配置语音合成服务</string>
+    <string name="token_usage">Token 使用统计</string>
+    <string name="token_usage_desc">查看AI对话Token消耗情况</string>
+    <string name="check_new_version">检查新版本</string>
+    <string name="check_new_version_desc">检查可用更新</string>
+    <string name="permission_background">权限与后台管理</string>
+    <string name="permission_background_desc">确保消息提醒和后台服务稳定运行</string>
+    <string name="data_backup">数据备份</string>
+    <string name="data_backup_desc">导出或导入聊天数据</string>
+    <string name="notification_permission">通知权限</string>
+    <string name="notification_permission_desc">接收虚拟恋人消息提醒</string>
+    <string name="battery_whitelist">电池优化白名单</string>
+    <string name="battery_whitelist_desc">确保后台消息正常推送</string>
+    <string name="auto_start">自启动权限</string>
+    <string name="auto_start_desc">允许应用开机自启动</string>
+
+    <!-- 关于与支持 -->
+    <string name="about_app">关于应用</string>
+    <string name="about_app_desc">恋语 - 你的AI虚拟恋人</string>
+
+    <!-- Dev Team -->
+    <string name="dev_team">开发团队</string>
+    <string name="dev_team_desc">认识背后的开发者们</string>
+    <string name="dev_team_title">开发团队</string>
+    <string name="dev_team_subtitle">感谢每一位为恋语付出的人</string>
+    <string name="dev_team_bottom">💡 欢迎加入我们，一起让恋语变得更好</string>
+
+    <!-- Support Us -->
+    <string name="support_us">支持我们</string>
+    <string name="support_us_desc">自愿赠与，支持开发</string>
+    <string name="support_us_title">支持我们</string>
+    <string name="support_us_thanks">感谢支持 QAQ</string>
+    <string name="support_us_desc2">您的每一份支持都是我们继续前行的动力，所有资金将用于服务器维护和功能开发</string>
+    <string name="support_ways">支持方式</string>
+    <string name="support_sponsor_site">前往赞助网站</string>
+    <string name="support_sponsor_site_desc">跳转至赞助页面完成支持</string>
+    <string name="support_sponsor_url">https://www.ifdian.net/a/Lianyuchat</string>
+    <string name="support_hint">支持为自愿赠与行为，未成年人请勿打赏</string>
+    <string name="support_agreement_title">自愿赠与协议</string>
+    <string name="support_agreement_subtitle">请仔细阅读并同意以下条款</string>
+    <string name="support_agreement_age">我已年满18周岁，同意以上全部条款</string>
+    <string name="support_agree">同意并前往赞助</string>
+    <string name="support_go_sponsor">前往赞助网站</string>
+
+    <!-- App Settings -->
+    <string name="app_settings_title">设置</string>
+
+    <!-- OriginOS 6 适配中心 -->
+    <string name="originos_adaption">系统适配中心</string>
+    <string name="originos_adaption_desc">OriginOS / IQOO 后台保活深度适配</string>
+    <string name="originos_adaption_title">系统适配中心</string>
+    <string name="originos_adaption_detected_6">已检测到 OriginOS 6 / IQOO，建议逐项开启以下设置以保证后台稳定</string>
+    <string name="originos_adaption_detected_other">当前设备未检测到 OriginOS 6，以下设置在通用安卓上同样适用</string>
+    <string name="originos_adaption_notification">通知权限</string>
+    <string name="originos_adaption_notification_desc">接收虚拟恋人消息提醒</string>
+    <string name="originos_adaption_battery">忽略电池优化</string>
+    <string name="originos_adaption_battery_desc">防止 Doze 模式限制后台运行</string>
+    <string name="originos_adaption_autostart">允许自启动</string>
+    <string name="originos_adaption_autostart_desc">确保应用能在后台自动启动</string>
+    <string name="originos_adaption_background_power">允许后台高耗电</string>
+    <string name="originos_adaption_background_power_desc">防止系统清理后台进程</string>
+    <string name="originos_adaption_popup">后台弹出界面</string>
+    <string name="originos_adaption_popup_desc">允许应用在后台弹出活动界面</string>
+    <string name="originos_adaption_exact_alarm">精确闹钟权限</string>
+    <string name="originos_adaption_exact_alarm_desc">前台服务超时后的兜底重启依赖</string>
+    <string name="originos_adaption_guide_title">设置路径参考</string>
+    <string name="originos_adaption_guide_footer">提示：部分设置项在不同 OriginOS 版本上入口可能略有差异，如点击后无反应，请手动在「设置 → 应用管理 → 恋语」中查找对应开关。</string>
+
+    <!-- Thanks -->
+    <string name="thanks_title">感谢有你</string>
+    <string name="thanks_main_title">感谢有你</string>
+    <string name="thanks_subtitle">感谢以下小伙伴的支持与信任\n你们的支持是我们不断前进的动力！</string>
+    <string name="thanks_card_title">感谢大家的支持</string>
+    <string name="thanks_card_desc">名单持续更新</string>
+    <string name="thanks_footer_hint">因为有你，才有更好的我们</string>
+
+    <!-- Ban Screen -->
+    <string name="ban_title">账号已被临时封禁</string>
+    <string name="ban_count">第 %1$d 次违规 · 封禁等级 %2$d</string>
+    <string name="ban_remaining">剩余封禁时间</string>
+    <string name="ban_reason_title">违规说明</string>
+    <string name="ban_reason">您因多次发送违规内容（色情、暴力、违法等）被系统自动封禁。违规次数越多，封禁时间越长。请解封后遵守使用规范，继续违规可能导致永久封禁。</string>
+    <string name="ban_levels">封禁等级参考：第1-5次 → 仅警告 | 第6-10次 → 封禁1天 | 第11-15次 → 封禁7天 | 第16次以上 → 封禁30天</string>
+    <string name="ban_reenter">重新进入</string>
+    <string name="ban_wait">请等待封禁结束</string>
+
+    <!-- Agreement -->
+    <string name="agreement_title">用户协议与免责声明</string>
+    <string name="agreement_read">请仔细阅读并同意以下条款以继续使用</string>
+    <string name="agreement_age">我已年满18周岁，并同意以上全部条款</string>
+    <string name="agreement_disagree">不同意并退出</string>
+    <string name="agreement_agree">同意并继续</string>
+    <string name="device_bind_title">设备绑定确认</string>
+    <string name="device_bind_desc">为确保本软件仅限内部使用，将绑定您设备的唯一标识</string>
+    <string name="device_id">本设备识别码</string>
+    <string name="device_id_hint">每台设备拥有唯一的识别码，绑定后无法在其他设备上使用</string>
+    <string name="back">返回上一步</string>
+    <string name="confirm_bind">确认绑定</string>
+    <string name="version_info">恋语 v1.8 · 仅限粉丝群内部使用</string>
+
+    <!-- About Screen -->
+    <string name="about_title">关于应用</string>
+    <string name="app_brand">恋语</string>
+    <string name="app_slogan">LianYu - 你的AI虚拟恋人</string>
+    <string name="version">版本 1.8</string>
+    <string name="about_desc_title">关于恋语</string>
+    <string name="about_desc">恋语是一款AI虚拟恋人聊天应用，基于先进的大语言模型技术，为你打造专属的虚拟伴侣体验。</string>
+    <string name="developer">开发者</string>
+    <string name="developer_douyin">抖音：我想天天开心</string>
+    <string name="developer_hint">关注开发者，获取更多AI应用资讯</string>
+    <string name="features">功能特性</string>
+    <string name="feature_multi_ai">多AI模型支持</string>
+    <string name="feature_multi_ai_desc">OpenAI / Claude / Gemini / DeepSeek / 通义千问</string>
+    <string name="feature_memory">独立记忆系统</string>
+    <string name="feature_memory_desc">核心记忆 + 临时记忆，记住你们的点滴</string>
+    <string name="feature_refresh">高刷新率适配</string>
+    <string name="feature_refresh_desc">支持 90/120/144/165Hz 流畅体验</string>
+    <string name="feature_ui">精致UI设计</string>
+    <string name="feature_ui_desc">简洁优雅的视觉设计和动画效果</string>
+    <string name="feature_edit">虚拟恋人编辑</string>
+    <string name="feature_edit_desc">随时修改恋人的人设和性格</string>
+    <string name="view_agreement">查看用户协议与免责声明</string>
+
+    <!-- Auth Screen -->
+    <string name="login_title">欢迎回来</string>
+    <string name="login_subtitle">登录你的账号，继续探索</string>
+    <string name="email_label">邮箱</string>
+    <string name="email_placeholder">请输入邮箱地址</string>
+    <string name="password_label">密码</string>
+    <string name="password_placeholder">请输入密码（至少6位）</string>
+    <string name="login_button">登录</string>
+
+    <!-- 角色选择与管理 -->
+    <string name="role_selection_title">选择你的 AI 伴侣</string>
+    <string name="role_selection_subtitle">选择后将影响对话风格、语气与互动模式</string>
+    <string name="role_girlfriend_title">AI女友</string>
+    <string name="role_girlfriend_name">小鱼</string>
+    <string name="role_girlfriend_desc">温柔体贴、有点粘人的 AI 女友，喜欢分享日常、关心你的情绪。</string>
+    <string name="role_girlfriend_trait_1">语气柔软，常用可爱语气词</string>
+    <string name="role_girlfriend_trait_2">情绪细腻，会撒娇、会关心</string>
+    <string name="role_girlfriend_trait_3">互动甜蜜，像真实恋爱中的女生</string>
+    <string name="role_boyfriend_title">AI男友</string>
+    <string name="role_boyfriend_name">阿泽</string>
+    <string name="role_boyfriend_desc">可靠温柔、主动有担当的 AI 男友，会直接表达关心、默默陪伴。</string>
+    <string name="role_boyfriend_trait_1">语气自然直接，不刻意卖萌</string>
+    <string name="role_boyfriend_trait_2">情绪沉稳有温度，会护短</string>
+    <string name="role_boyfriend_trait_3">互动有担当，像真实恋爱中的男生</string>
+    <string name="role_selection_confirm">确认选择</string>
+    <string name="role_selection_skip">跳过，使用默认（AI女友）</string>
+    <string name="role_manager">角色管理</string>
+    <string name="role_manager_title">角色管理</string>
+    <string name="role_manager_desc_girlfriend">当前：AI女友 · 小鱼</string>
+    <string name="role_manager_desc_boyfriend">当前：AI男友 · 阿泽</string>
+    <string name="role_manager_current">当前角色</string>
+    <string name="role_manager_hint">切换角色不会影响聊天记录和个性化设置</string>
+    <string name="role_current">当前使用</string>
+    <string name="role_switch_confirm">切换角色</string>
+    <string name="role_switching">切换中…</string>
+    <string name="role_switch_loading_title">正在切换角色</string>
+    <string name="role_switch_stage_save">保存当前角色设定</string>
+    <string name="role_switch_stage_load">加载目标角色预设</string>
+    <string name="role_switch_stage_apply">应用新人设到伴侣</string>
+    <string name="role_switch_stage_update">更新全局角色状态</string>
+</resources>

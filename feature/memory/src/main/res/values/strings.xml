@@ -1,0 +1,20 @@
+<resources>
+    <string name="memory_management">记忆管理</string>
+    <string name="core_memory">核心记忆</string>
+    <string name="temp_memory">临时记忆</string>
+    <string name="select_companion_hint">选择一个虚拟恋人查看记忆</string>
+    <string name="all">全部</string>
+    <string name="no_core_memory">暂无核心记忆\n多和TA聊天，记忆会自动积累</string>
+    <string name="no_temp_memory">暂无临时记忆\n开始聊天后会自动记录</string>
+    <string name="importance">重要度 %1$d%%</string>
+    <string name="context">上下文: %1$s</string>
+    <string name="you">你: %1$s</string>
+    <string name="no_companions">还没有虚拟恋人</string>
+    <string name="create_first">先去创建或添加一个吧</string>
+    <string name="fact">事实</string>
+    <string name="emotion">情感</string>
+    <string name="preference">偏好</string>
+    <string name="event">事件</string>
+    <string name="habit">习惯</string>
+    <string name="relationship">关系</string>
+</resources>

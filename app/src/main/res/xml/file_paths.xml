@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Only expose specific subdirectories, not the entire filesystem -->
+    <files-path name="avatars" path="avatars/"/>
+    <cache-path name="shared_images" path="shared_images/"/>
+    <cache-path name="camera_photos" path="."/>
+    <external-cache-path name="external_shared_images" path="shared_images/"/>
+</paths>

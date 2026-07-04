@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_title">言語設定</string>
+    <string name="language_simplified_chinese">簡体字中国語</string>
+    <string name="language_traditional_chinese">繁体字中国語</string>
+    <string name="language_english">英語</string>
+    <string name="language_japanese">日本語</string>
+    <string name="language_korean">韓国語</string>
+    <string name="cd_back">戻る</string>
+    <string name="cd_selected">選択済み</string>
+    <string name="back">戻る</string>
+
+    <!-- Experimental Features -->
+    <string name="experimental_features">実験的機能</string>
+    <string name="experimental_features_desc">まだ正式リリースされていないテスト機能を探索</string>
+    <string name="experimental_features_hint">以下の機能は実験段階であり、不安定な場合があります。慎重に有効化してください。</string>
+
+    <string name="theme_title">テーマ</string>
+    <string name="theme_light">ライト</string>
+    <string name="theme_light_desc">明るいインターフェース</string>
+    <string name="theme_dark">ダーク</string>
+    <string name="theme_dark_desc">目に優しいダークスタイル</string>
+    <string name="theme_system">システムに従う</string>
+    <string name="theme_system_desc">自動でライト/ダーク切替</string>
+
+    <string name="settings_title">API設定</string>
+    <string name="settings_hint">カードをタップしてAPIを設定</string>
+    <string name="configured">設定済み</string>
+    <string name="click_config">タップして設定</string>
+    <string name="configuring">設定中...</string>
+    <string name="api_key">APIキー</string>
+    <string name="base_url">Base URL</string>
+    <string name="model">モデル</string>
+    <string name="temperature">温度</string>
+    <string name="max_tokens">最大トークン数 (任意)</string>
+    <string name="save_config">設定を保存</string>
+    <string name="save_success">設定を保存しました</string>
+    <string name="save_failed">保存に失敗しました</string>
+
+    <string name="framerate_title">フレームレート</string>
+    <string name="screen_refresh_rate">画面リフレッシュレート</string>
+    <string name="framerate_hint">自動モードではデバイスの性能に応じて最適なフレームレートを自動選択します。高フレームレートはバッテリー消費を増加させる可能性があります。</string>
+
+    <string name="check_update_title">アップデート確認</string>
+    <string name="current_version">現在のバージョン</string>
+    <string name="check_update_btn">アップデート確認</string>
+    <string name="latest_version">最新バージョンです</string>
+    <string name="check_failed">確認失敗</string>
+    <string name="check_failed_msg">GitHubに接続できません。ネットワークを確認して再試行してください</string>
+    <string name="new_version_found">新バージョン %1$s が見つかりました</string>
+    <string name="downloading">ダウンロード中 %1$d%%</string>
+    <string name="download_complete">ダウンロード完了、インストール中...</string>
+    <string name="download_failed">ダウンロード失敗、ネットワークを確認して再試行してください</string>
+    <string name="update_now">今すぐアップデート</string>
+</resources>

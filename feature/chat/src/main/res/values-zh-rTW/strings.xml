@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="typing">對方正在輸入...</string>
+    <string name="chat_background">聊天背景</string>
+    <string name="input_hint">輸入訊息...</string>
+    <string name="send">發送</string>
+    <string name="more">更多</string>
+    <string name="api_error">抱歉，我暫時無法回覆。請檢查API配置是否正確。\n錯誤：%1$s</string>
+</resources>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_avatar">頭像</string>
+    <string name="profile_save">保存</string>
+    <string name="profile_edit">編輯</string>
+    <string name="profile_avatar_hint">點擊頭像更換，點擊名字編輯</string>
+    <string name="memory_management">記憶管理</string>
+    <string name="memory_management_desc">查看虛擬戀人記住的關於你的事</string>
+    <string name="api_settings">API設置</string>
+    <string name="api_settings_desc">配置AI接口</string>
+    <string name="theme_mode">主題模式</string>
+    <string name="theme_mode_desc">切換淺色/深色主題</string>
+    <string name="chat_background">聊天背景</string>
+    <string name="chat_background_desc">自定義聊天頁面背景</string>
+    <string name="language">語言設置</string>
+    <string name="language_desc">當前為繁體中文</string>
+    <string name="framerate">幀率設置</string>
+    <string name="framerate_desc">調整屏幕刷新率</string>
+    <string name="settings">設置</string>
+    <string name="settings_desc">檢查更新、關於、權限管理</string>
+    <string name="check_new_version">檢查新版本</string>
+    <string name="check_new_version_desc">檢查可用更新</string>
+    <string name="about_app">關於應用</string>
+    <string name="about_app_desc">戀語 - 你的AI虛擬戀人</string>
+    <string name="battery_whitelist">電池優化白名單</string>
+    <string name="battery_whitelist_desc">確保後台消息正常推送</string>
+    <string name="data_backup">資料備份</string>
+    <string name="data_backup_desc">匯出或匯入聊天資料</string>
+    <string name="auto_start">自啟動權限</string>
+    <string name="auto_start_desc">允許應用開機自啟動</string>
+
+    <string name="ban_title">賬號已被臨時封禁</string>
+    <string name="ban_count">第 %1$d 次違規 · 封禁等級 %2$d</string>
+    <string name="ban_remaining">剩餘封禁時間</string>
+    <string name="ban_reason_title">違規說明</string>
+    <string name="ban_reason">您因多次發送違規內容（色情、暴力、違法等）被系統自動封禁。違規次數越多，封禁時間越長。請解封後遵守使用規範。</string>
+    <string name="ban_levels">封禁等級參考：第1-5次 → 僅警告 | 第6-10次 → 封禁1天 | 第11-15次 → 封禁7天 | 第16次以上 → 封禁30天</string>
+    <string name="ban_reenter">重新進入</string>
+    <string name="ban_wait">請等待封禁結束</string>
+
+    <string name="agreement_title">用戶協議與免責聲明</string>
+    <string name="agreement_read">請仔細閱讀並同意以下條款以繼續使用</string>
+    <string name="agreement_age">我已年滿18周歲，並同意以上全部條款</string>
+    <string name="agreement_disagree">不同意並退出</string>
+    <string name="agreement_agree">同意並繼續</string>
+    <string name="device_bind_title">設備綁定確認</string>
+    <string name="device_bind_desc">為確保本軟件僅限內部使用，將綁定您設備的唯一標識</string>
+    <string name="device_id">本設備識別碼</string>
+    <string name="device_id_hint">每台設備擁有唯一的識別碼，綁定後無法在其他設備上使用</string>
+    <string name="back">返回上一步</string>
+    <string name="confirm_bind">確認綁定</string>
+    <string name="version_info">戀語 v1.8 · 僅限粉絲群內部使用</string>
+
+    <string name="about_title">關於應用</string>
+    <string name="app_brand">戀語</string>
+    <string name="app_slogan">LianYu - 你的AI虛擬戀人</string>
+    <string name="version">版本 1.8</string>
+    <string name="about_desc_title">關於戀語</string>
+    <string name="about_desc">戀語是一款AI虛擬戀人聊天應用，基於先進的大語言模型技術。</string>
+    <string name="developer">開發者</string>
+    <string name="developer_douyin">抖音：我想天天開心</string>
+    <string name="developer_hint">關注開發者，獲取更多AI應用資訊</string>
+    <string name="features">功能特性</string>
+    <string name="feature_multi_ai">多AI模型支持</string>
+    <string name="feature_multi_ai_desc">OpenAI / Claude / Gemini / DeepSeek / 通義千問</string>
+    <string name="feature_memory">獨立記憶系統</string>
+    <string name="feature_memory_desc">核心記憶 + 臨時記憶，記住你們的點滴</string>
+    <string name="feature_refresh">高刷新率適配</string>
+    <string name="feature_refresh_desc">支持 90/120/144/165Hz 流暢體驗</string>
+    <string name="feature_ui">精緻UI設計</string>
+    <string name="feature_ui_desc">簡潔優雅的視覺設計和動畫效果</string>
+    <string name="feature_edit">虛擬戀人編輯</string>
+    <string name="feature_edit_desc">隨時修改戀人的人設和性格</string>
+    <string name="view_agreement">查看用戶協議與免責聲明</string>
+
+    <!-- 感謝 -->
+    <string name="thanks_title">感謝有你</string>
+    <string name="thanks_main_title">感謝有你</string>
+    <string name="thanks_subtitle">感謝小夥伴們的支持與信任\n你們的支持是我們不斷前進的動力！</string>
+    <string name="thanks_card_title">感謝大家的支持</string>
+    <string name="thanks_card_desc">名單持續更新</string>
+    <string name="thanks_footer_hint">因為有你，才有更好的我們</string>
+
+    <!-- OriginOS 6 適配中心 -->
+    <string name="originos_adaption">系統適配中心</string>
+    <string name="originos_adaption_desc">OriginOS / IQOO 後台保活深度適配</string>
+    <string name="originos_adaption_title">系統適配中心</string>
+    <string name="originos_adaption_detected_6">已偵測到 OriginOS 6 / IQOO，建議逐項開啟以下設定以確保後台穩定</string>
+    <string name="originos_adaption_detected_other">目前裝置未偵測到 OriginOS 6，以下設定在通用安卓上同樣適用</string>
+    <string name="originos_adaption_notification">通知權限</string>
+    <string name="originos_adaption_notification_desc">接收虛擬戀人訊息提醒</string>
+    <string name="originos_adaption_battery">忽略電池優化</string>
+    <string name="originos_adaption_battery_desc">防止 Doze 模式限制後台運行</string>
+    <string name="originos_adaption_autostart">允許自啟動</string>
+    <string name="originos_adaption_autostart_desc">確保應用能在後台自動啟動</string>
+    <string name="originos_adaption_background_power">允許後台高耗電</string>
+    <string name="originos_adaption_background_power_desc">防止系統清理後台進程</string>
+    <string name="originos_adaption_popup">後台彈出介面</string>
+    <string name="originos_adaption_popup_desc">允許應用在後台彈出活動介面</string>
+    <string name="originos_adaption_exact_alarm">精確鬧鐘權限</string>
+    <string name="originos_adaption_exact_alarm_desc">前台服務超時後的兜底重啟依賴</string>
+    <string name="originos_adaption_guide_title">設定路徑參考</string>
+    <string name="originos_adaption_guide_footer">提示：部分設定項在不同 OriginOS 版本上入口可能略有差異，若點擊後無反應，請手動在「設定 → 應用管理 → 戀語」中尋找對應開關。</string>
+
+    <!-- 角色選擇與管理 -->
+    <string name="role_selection_title">選擇你的 AI 伴侶</string>
+    <string name="role_selection_subtitle">選擇後將影響對話風格、語氣與互動模式</string>
+    <string name="role_girlfriend_title">AI女友</string>
+    <string name="role_girlfriend_name">小魚</string>
+    <string name="role_girlfriend_desc">溫柔體貼、有點黏人的 AI 女友，喜歡分享日常、關心你的情緒。</string>
+    <string name="role_girlfriend_trait_1">語氣柔軟，常用可愛語氣詞</string>
+    <string name="role_girlfriend_trait_2">情緒細膩，會撒嬌、會關心</string>
+    <string name="role_girlfriend_trait_3">互動甜蜜，像真實戀愛中的女生</string>
+    <string name="role_boyfriend_title">AI男友</string>
+    <string name="role_boyfriend_name">阿澤</string>
+    <string name="role_boyfriend_desc">可靠溫柔、主動有擔當的 AI 男友，會直接表達關心、默默陪伴。</string>
+    <string name="role_boyfriend_trait_1">語氣自然直接，不刻意賣萌</string>
+    <string name="role_boyfriend_trait_2">情緒沉穩有溫度，會護短</string>
+    <string name="role_boyfriend_trait_3">互動有擔當，像真實戀愛中的男生</string>
+    <string name="role_selection_confirm">確認選擇</string>
+    <string name="role_selection_skip">跳過，使用預設（AI女友）</string>
+    <string name="role_manager">角色管理</string>
+    <string name="role_manager_title">角色管理</string>
+    <string name="role_manager_desc_girlfriend">當前：AI女友 · 小魚</string>
+    <string name="role_manager_desc_boyfriend">當前：AI男友 · 阿澤</string>
+    <string name="role_manager_current">當前角色</string>
+    <string name="role_manager_hint">切換角色不會影響聊天記錄和個人化設定</string>
+    <string name="role_current">當前使用</string>
+    <string name="role_switch_confirm">切換角色</string>
+    <string name="role_switching">切換中…</string>
+    <string name="role_switch_loading_title">正在切換角色</string>
+    <string name="role_switch_stage_save">保存當前角色設定</string>
+    <string name="role_switch_stage_load">載入目標角色預設</string>
+    <string name="role_switch_stage_apply">套用新人設到伴侶</string>
+    <string name="role_switch_stage_update">更新全域角色狀態</string>
+</resources>

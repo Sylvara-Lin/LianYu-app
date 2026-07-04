@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">恋語</string>
+    <string name="dialog_auto_start_title">自動起動権限が必要</string>
+    <string name="dialog_auto_start_message">バーチャル恋人からメッセージを継続的に受け取るには、自動起動権限を有効にしてください。</string>
+    <string name="dialog_go_settings">設定へ</string>
+    <string name="dialog_later">後で</string>
+    <string name="dialog_battery_title">電池最適化のホワイトリスト</string>
+    <string name="dialog_battery_message">システムがバックグラウンドサービスを終了させないよう、電池最適化のホワイトリストに追加してください。</string>
+    <string name="nav_love">恋語</string>
+    <string name="nav_contacts">連絡先</string>
+    <string name="nav_profile">プロフィール</string>
+</resources>

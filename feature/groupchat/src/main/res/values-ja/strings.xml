@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="group_typing">彼女たちが入力中...</string>
+    <string name="group_chat">グループ</string>
+    <string name="create_group">グループ作成</string>
+    <string name="create">作成</string>
+    <string name="group_name">グループ名</string>
+    <string name="group_name_hint">グループ名を入力</string>
+    <string name="select_companions">彼女を選択 (%1$d/%2$d)</string>
+    <string name="no_companions">まだ彼女がいません、先に追加してください</string>
+    <string name="group_reply_error">申し訳ありません、グループ返信ができません。API設定を確認してください。\nエラー: %1$s</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LianYu</string>
+    <string name="dialog_auto_start_title">Auto-start Permission Required</string>
+    <string name="dialog_auto_start_message">To allow your virtual companion to send you messages continuously, please enable auto-start permission in settings.</string>
+    <string name="dialog_go_settings">Go to Settings</string>
+    <string name="dialog_later">Later</string>
+    <string name="dialog_battery_title">Battery Optimization Whitelist</string>
+    <string name="dialog_battery_message">To prevent the system from killing background services and ensure your virtual companion can send messages, please add this app to the battery optimization whitelist.</string>
+    <string name="nav_love">LianYu</string>
+    <string name="nav_contacts">Contacts</string>
+    <string name="nav_profile">Me</string>
+</resources>

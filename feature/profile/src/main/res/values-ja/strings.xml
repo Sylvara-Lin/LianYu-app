@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_avatar">アバター</string>
+    <string name="profile_save">保存</string>
+    <string name="profile_edit">編集</string>
+    <string name="profile_avatar_hint">アバターをタップして変更、名前をタップして編集</string>
+    <string name="memory_management">記憶管理</string>
+    <string name="memory_management_desc">恋人が覚えていることを見る</string>
+    <string name="api_settings">API設定</string>
+    <string name="api_settings_desc">AI APIを設定</string>
+    <string name="theme_mode">テーマ</string>
+    <string name="theme_mode_desc">ライト/ダーク切替</string>
+    <string name="chat_background">チャット背景</string>
+    <string name="chat_background_desc">チャット背景をカスタマイズ</string>
+    <string name="language">言語設定</string>
+    <string name="language_desc">現在: 日本語</string>
+    <string name="framerate">フレームレート</string>
+    <string name="framerate_desc">画面リフレッシュレート調整</string>
+    <string name="settings">設定</string>
+    <string name="settings_desc">アップデート、について、権限</string>
+    <string name="check_new_version">アップデート確認</string>
+    <string name="check_new_version_desc">利用可能なアップデートを確認</string>
+    <string name="about_app">アプリについて</string>
+    <string name="about_app_desc">恋語 - あなたのAIバーチャル恋人</string>
+    <string name="battery_whitelist">電池最適化ホワイトリスト</string>
+    <string name="battery_whitelist_desc">バックグラウンドメッセージを確実に</string>
+    <string name="data_backup">データバックアップ</string>
+    <string name="data_backup_desc">チャットデータをエクスポートまたはインポート</string>
+    <string name="auto_start">自動起動</string>
+    <string name="auto_start_desc">自動起動を許可</string>
+
+    <string name="ban_title">アカウントが一時的に禁止されました</string>
+    <string name="ban_count">違反 %1$d 回 · 禁止レベル %2$d</string>
+    <string name="ban_remaining">残り禁止時間</string>
+    <string name="ban_reason_title">違反の詳細</string>
+    <string name="ban_reason">違反コンテンツ（性的、暴力的、違法等）を繰り返し送信したため、自動的に禁止されました。</string>
+    <string name="ban_levels">禁止レベル: 1-5回 → 警告 | 6-10回 → 1日 | 11-15回 → 7日 | 16回以上 → 30日</string>
+    <string name="ban_reenter">再入室</string>
+    <string name="ban_wait">禁止終了までお待ちください</string>
+
+    <string name="agreement_title">利用規約と免責事項</string>
+    <string name="agreement_read">続行する前に以下の条項をお読みください</string>
+    <string name="agreement_age">18歳以上で、すべての条項に同意します</string>
+    <string name="agreement_disagree">同意しないで終了</string>
+    <string name="agreement_agree">同意して続行</string>
+    <string name="device_bind_title">デバイス紐付け</string>
+    <string name="device_bind_desc">内部使用のみを確保するため、デバイスを紐付けます</string>
+    <string name="device_id">デバイスID</string>
+    <string name="device_id_hint">各デバイスには固有のIDがあります。紐付け後は他のデバイスで使用できません。</string>
+    <string name="back">戻る</string>
+    <string name="confirm_bind">紐付けを確認</string>
+    <string name="version_info">恋語 v1.8 · ファングループ専用</string>
+
+    <string name="about_title">アプリについて</string>
+    <string name="app_brand">恋語</string>
+    <string name="app_slogan">LianYu - あなたのAIバーチャル恋人</string>
+    <string name="version">バージョン 1.8</string>
+    <string name="about_desc_title">恋語について</string>
+    <string name="about_desc">恋語は先進的な大規模言語モデル技術に基づくAIバーチャル恋人チャットアプリです。</string>
+    <string name="developer">開発者</string>
+    <string name="developer_douyin">TikTok: 我想天天开心</string>
+    <string name="developer_hint">フォローして最新情報をゲット</string>
+    <string name="features">機能</string>
+    <string name="feature_multi_ai">複数AIモデル対応</string>
+    <string name="feature_multi_ai_desc">OpenAI / Claude / Gemini / DeepSeek / 通義千問</string>
+    <string name="feature_memory">独立記憶システム</string>
+    <string name="feature_memory_desc">コア記憶 + 一時記憶</string>
+    <string name="feature_refresh">高リフレッシュレート</string>
+    <string name="feature_refresh_desc">90/120/144/165Hz対応</string>
+    <string name="feature_ui">洗練されたUI</string>
+    <string name="feature_ui_desc">シンプルでエレガントなデザイン</string>
+    <string name="feature_edit">恋人編集</string>
+    <string name="feature_edit_desc">いつでも性格を編集</string>
+    <string name="view_agreement">利用規約を見る</string>
+
+    <!-- サンクス -->
+    <string name="thanks_title">感謝</string>
+    <string name="thanks_main_title">感謝</string>
+    <string name="thanks_subtitle">ご支援と信頼に感謝します。\n皆様の支えが前進の力になります！</string>
+    <string name="thanks_card_title">応援ありがとう</string>
+    <string name="thanks_card_desc">リストは随時更新中</string>
+    <string name="thanks_footer_hint">あなたがいるから、私たちはより良くなれます</string>
+
+    <!-- OriginOS 6 適応センター -->
+    <string name="originos_adaption">システム適応センター</string>
+    <string name="originos_adaption_desc">OriginOS / IQOO のバックグラウンド維持の最適化</string>
+    <string name="originos_adaption_title">システム適応センター</string>
+    <string name="originos_adaption_detected_6">OriginOS 6 / IQOO を検出しました。バックグラウンドを安定させるため以下の設定を有効にしてください。</string>
+    <string name="originos_adaption_detected_other">OriginOS 6 は検出されませんでした。標準 Android でも適用されます。</string>
+    <string name="originos_adaption_notification">通知権限</string>
+    <string name="originos_adaption_notification_desc">仮想恋人のメッセージ通知を受信</string>
+    <string name="originos_adaption_battery">バッテリー最適化を無視</string>
+    <string name="originos_adaption_battery_desc">Doze モードによるバックグラウンド制限を防止</string>
+    <string name="originos_adaption_autostart">自動起動を許可</string>
+    <string name="originos_adaption_autostart_desc">バックグラウンドで自動起動できるようにする</string>
+    <string name="originos_adaption_background_power">バックグラウンド高消費を許可</string>
+    <string name="originos_adaption_background_power_desc">システムがバックグラウンドプロセスを終了するのを防止</string>
+    <string name="originos_adaption_popup">バックグラウンド ポップアップ</string>
+    <string name="originos_adaption_popup_desc">バックグラウンドからアクティビティを起動することを許可</string>
+    <string name="originos_adaption_exact_alarm">正確なアラーム権限</string>
+    <string name="originos_adaption_exact_alarm_desc">フォアグラウンドサービスのタイムアウト後の再起動フォールバックに必要</string>
+    <string name="originos_adaption_guide_title">設定パス参考</string>
+    <string name="originos_adaption_guide_footer">ヒント: OriginOS のバージョンによって項目の場所が異なる場合があります。タップしても反応しない場合は、設定 → アプリ → LianYu から手動で確認してください。</string>
+
+    <!-- ロール選択と管理 -->
+    <string name="role_selection_title">AI パートナーを選ぶ</string>
+    <string name="role_selection_subtitle">選択後、会話の雰囲気、語調、相互作用の形が変わります</string>
+    <string name="role_girlfriend_title">AI彼女</string>
+    <string name="role_girlfriend_name">小魚</string>
+    <string name="role_girlfriend_desc">優しくて甘えん坊な AI 彼女。日常を共有し、あなたの感情を気にかけます。</string>
+    <string name="role_girlfriend_trait_1">柔らかい語調で可愛い語尾を使う</string>
+    <string name="role_girlfriend_trait_2">繊細な感情で甘えたり気遣ったり</string>
+    <string name="role_girlfriend_trait_3">リアルな恋愛中の彼女のような掛け合い</string>
+    <string name="role_boyfriend_title">AI彼氏</string>
+    <string name="role_boyfriend_name">阿沢</string>
+    <string name="role_boyfriend_desc">頼もしくて優しい AI 彼氏。素直に気遣い、そっと寄り添います。</string>
+    <string name="role_boyfriend_trait_1">自然でストレートな語調</string>
+    <string name="role_boyfriend_trait_2">落ち着いた温かさで守ってくれる</string>
+    <string name="role_boyfriend_trait_3">リアルな恋愛中の彼氏のような掛け合い</string>
+    <string name="role_selection_confirm">選択する</string>
+    <string name="role_selection_skip">スキップしてデフォルト（AI彼女）を使う</string>
+    <string name="role_manager">ロール管理</string>
+    <string name="role_manager_title">ロール管理</string>
+    <string name="role_manager_desc_girlfriend">現在：AI彼女 · 小魚</string>
+    <string name="role_manager_desc_boyfriend">現在：AI彼氏 · 阿沢</string>
+    <string name="role_manager_current">現在のロール</string>
+    <string name="role_manager_hint">ロールを切り替えてもチャット履歴や設定は失われません</string>
+    <string name="role_current">使用中</string>
+    <string name="role_switch_confirm">ロールを切り替える</string>
+    <string name="role_switching">切り替え中…</string>
+    <string name="role_switch_loading_title">ロールを切り替え中</string>
+    <string name="role_switch_stage_save">現在のロール設定を保存</string>
+    <string name="role_switch_stage_load">目標ロールのプリセットを読み込み</string>
+    <string name="role_switch_stage_apply">新しい設定をパートナーに適用</string>
+    <string name="role_switch_stage_update">グローバルロール状態を更新</string>
+</resources>

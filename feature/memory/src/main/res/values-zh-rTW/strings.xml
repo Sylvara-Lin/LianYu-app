@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memory_management">記憶管理</string>
+    <string name="core_memory">核心記憶</string>
+    <string name="temp_memory">臨時記憶</string>
+    <string name="select_companion_hint">選擇一個虛擬戀人查看記憶</string>
+    <string name="all">全部</string>
+    <string name="no_core_memory">暫無核心記憶\n多和TA聊天，記憶會自動積累</string>
+    <string name="no_temp_memory">暫無臨時記憶\n開始聊天後會自動記錄</string>
+    <string name="importance">重要度 %1$d%%</string>
+    <string name="context">上下文: %1$s</string>
+    <string name="you">你: %1$s</string>
+    <string name="no_companions">還沒有虛擬戀人</string>
+    <string name="create_first">先去創建或新增一個吧</string>
+    <string name="fact">事實</string>
+    <string name="emotion">情感</string>
+    <string name="preference">偏好</string>
+    <string name="event">事件</string>
+    <string name="habit">習慣</string>
+    <string name="relationship">關係</string>
+</resources>

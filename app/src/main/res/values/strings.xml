@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">恋语</string>
+    <string name="dialog_auto_start_title">需要自启动权限</string>
+    <string name="dialog_auto_start_message">为了让虚拟恋人能够持续给你发送消息，需要允许应用自启动。请在设置中开启。</string>
+    <string name="dialog_go_settings">去设置</string>
+    <string name="dialog_later">稍后</string>
+    <string name="dialog_battery_title">需要电池优化白名单</string>
+    <string name="dialog_battery_message">为了防止系统杀死后台服务，导致虚拟恋人无法发送消息，请将应用加入电池优化白名单。</string>
+    <string name="nav_love">恋语</string>
+    <string name="nav_message">消息</string>
+    <string name="nav_contacts">通讯录</string>
+    <string name="nav_profile">我</string>
+</resources>

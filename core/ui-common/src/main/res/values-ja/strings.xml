@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_white">デフォルト白</string>
+    <string name="warm_pink">ウォームピンク</string>
+    <string name="lavender">ラベンダー</string>
+    <string name="ocean">オーシャン</string>
+    <string name="forest">フォレスト</string>
+    <string name="sunset">サンセット</string>
+    <string name="night_sky">ナイトスカイ</string>
+    <string name="select_chat_bg">チャット背景を選択</string>
+    <string name="select_bg_hint">プリセットまたは画像をアップロード:</string>
+    <string name="close">閉じる</string>
+    <string name="custom">カスタム</string>
+    <string name="upload_image">画像をアップロード</string>
+    <string name="add_custom_bg">カスタム背景を追加</string>
+    <string name="delete">削除</string>
+    <string name="new_version">新バージョン発見</string>
+    <string name="available_now">現在利用可能</string>
+    <string name="released_on">リリース日 %1$s</string>
+    <string name="update_content">更新内容</string>
+    <string name="default_update_log">体験最適化、不具合修正</string>
+    <string name="download_complete">ダウンロード完了 ✓</string>
+    <string name="downloading_progress">ダウンロード中 %1$d%%</string>
+    <string name="download_failed">ダウンロード失敗、ネットワークを確認してください</string>
+    <string name="remind_later">後で通知</string>
+    <string name="downloading">ダウンロード中...</string>
+    <string name="downloaded">ダウンロード済み</string>
+    <string name="update_now">今すぐ更新</string>
+    <string name="more">もっと</string>
+    <string name="send">送信</string>
+    <string name="input_message_hint">メッセージを入力...</string>
+</resources>

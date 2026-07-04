@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="group_typing">Companions are typing...</string>
+    <string name="group_chat">Group Chat</string>
+    <string name="create_group">Create Group</string>
+    <string name="create">Create</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_name_hint">Enter group name</string>
+    <string name="select_companions">Select companions (%1$d/%2$d)</string>
+    <string name="no_companions">No companions yet, add one first</string>
+    <string name="group_reply_error">Sorry, group chat is temporarily unavailable. Please check your API configuration.\nError: %1$s</string>
+</resources>

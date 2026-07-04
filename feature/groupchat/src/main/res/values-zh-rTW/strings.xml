@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="group_typing">虛擬戀人們正在輸入...</string>
+    <string name="group_chat">群聊</string>
+    <string name="create_group">創建群聊</string>
+    <string name="create">創建</string>
+    <string name="group_name">群聊名稱</string>
+    <string name="group_name_hint">輸入群聊名稱</string>
+    <string name="select_companions">選擇虛擬戀人 (%1$d/%2$d)</string>
+    <string name="no_companions">還沒有虛擬戀人，先去新增吧</string>
+    <string name="group_reply_error">抱歉，群聊暫時無法回覆。請檢查API配置是否正確。\n錯誤：%1$s</string>
+</resources>

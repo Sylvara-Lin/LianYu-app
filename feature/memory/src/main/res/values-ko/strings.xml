@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memory_management">기억 관리</string>
+    <string name="core_memory">핵심 기억</string>
+    <string name="temp_memory">임시 기억</string>
+    <string name="select_companion_hint">여자친구를 선택하여 기억 보기</string>
+    <string name="all">전체</string>
+    <string name="no_core_memory">핵심 기억이 없습니다\n더 많이 채팅하세요</string>
+    <string name="no_temp_memory">임시 기억이 없습니다\n채팅 후 자동 기록됩니다</string>
+    <string name="importance">중요도 %1$d%%</string>
+    <string name="context">컨텍스트: %1$s</string>
+    <string name="you">당신: %1$s</string>
+    <string name="no_companions">아직 여자친구가 없습니다</string>
+    <string name="create_first">먼저 만들어 주세요</string>
+    <string name="fact">사실</string>
+    <string name="emotion">감정</string>
+    <string name="preference">선호</string>
+    <string name="event">이벤트</string>
+    <string name="habit">습관</string>
+    <string name="relationship">관계</string>
+</resources>

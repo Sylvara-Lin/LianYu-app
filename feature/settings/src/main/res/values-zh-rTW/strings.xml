@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_title">語言設置</string>
+    <string name="language_simplified_chinese">簡體中文</string>
+    <string name="language_traditional_chinese">繁體中文</string>
+    <string name="language_english">英文</string>
+    <string name="language_japanese">日文</string>
+    <string name="language_korean">韓文</string>
+    <string name="cd_back">返回</string>
+    <string name="cd_selected">已選中</string>
+    <string name="back">返回</string>
+
+    <!-- Experimental Features -->
+    <string name="experimental_features">實驗性功能</string>
+    <string name="experimental_features_desc">探索尚未正式發布的測試功能</string>
+    <string name="experimental_features_hint">以下功能處於實驗階段，可能不穩定，請謹慎開啟。</string>
+
+    <string name="theme_title">主題模式</string>
+    <string name="theme_light">淺色模式</string>
+    <string name="theme_light_desc">明亮的界面風格</string>
+    <string name="theme_dark">深色模式</string>
+    <string name="theme_dark_desc">護眼的暗色風格</string>
+    <string name="theme_system">跟隨系統</string>
+    <string name="theme_system_desc">自動切換淺色/深色</string>
+
+    <string name="settings_title">API 設置</string>
+    <string name="settings_hint">點擊卡片翻轉配置API</string>
+    <string name="configured">已配置</string>
+    <string name="click_config">點擊配置</string>
+    <string name="configuring">配置中...</string>
+    <string name="api_key">API密鑰</string>
+    <string name="base_url">Base URL</string>
+    <string name="model">模型</string>
+    <string name="temperature">溫度</string>
+    <string name="max_tokens">最大Token數 (可選)</string>
+    <string name="save_config">保存配置</string>
+    <string name="save_success">配置已保存</string>
+    <string name="save_failed">保存失敗</string>
+
+    <string name="framerate_title">幀率設置</string>
+    <string name="screen_refresh_rate">屏幕刷新率</string>
+    <string name="framerate_hint">選擇自動模式將根據設備性能自動匹配最佳幀率。高幀率可能增加電量消耗。</string>
+
+    <string name="check_update_title">檢查新版本</string>
+    <string name="current_version">當前版本</string>
+    <string name="check_update_btn">檢查更新</string>
+    <string name="latest_version">已是最新版本</string>
+    <string name="check_failed">檢查失敗</string>
+    <string name="check_failed_msg">無法連接GitHub，請檢查網絡連接後重試</string>
+    <string name="new_version_found">發現新版本 %1$s</string>
+    <string name="downloading">正在下載 %1$d%%</string>
+    <string name="download_complete">下載完成，正在安裝...</string>
+    <string name="download_failed">下載失敗，請檢查網絡後重試</string>
+    <string name="update_now">立即更新</string>
+</resources>

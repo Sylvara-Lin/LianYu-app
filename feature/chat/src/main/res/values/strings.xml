@@ -1,0 +1,9 @@
+<resources>
+    <string name="typing">对方正在输入...</string>
+    <string name="chat_background">聊天背景</string>
+    <string name="input_hint">输入消息...</string>
+    <string name="send">发送</string>
+    <string name="more">更多</string>
+    <string name="api_error">抱歉，我暂时无法回复。请检查API配置是否正确。\n错误：%1$s</string>
+    <string name="api_error_generic">抱歉，回复失败了，请稍后重试。</string>
+</resources>

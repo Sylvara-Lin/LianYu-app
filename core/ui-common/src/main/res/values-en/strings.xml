@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_white">Default White</string>
+    <string name="warm_pink">Warm Pink</string>
+    <string name="lavender">Lavender</string>
+    <string name="ocean">Ocean</string>
+    <string name="forest">Forest</string>
+    <string name="sunset">Sunset</string>
+    <string name="night_sky">Night Sky</string>
+    <string name="select_chat_bg">Select Chat Background</string>
+    <string name="select_bg_hint">Choose preset or upload your own:</string>
+    <string name="close">Close</string>
+    <string name="custom">Custom</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="add_custom_bg">Add Custom Background</string>
+    <string name="delete">Delete</string>
+    <string name="new_version">New Version Found</string>
+    <string name="available_now">Available Now</string>
+    <string name="released_on">Released on %1$s</string>
+    <string name="update_content">What\'s New</string>
+    <string name="default_update_log">Optimized experience, bug fixes</string>
+    <string name="download_complete">Download Complete ✓</string>
+    <string name="downloading_progress">Downloading %1$d%%</string>
+    <string name="download_failed">Download failed, please check network</string>
+    <string name="remind_later">Remind Later</string>
+    <string name="downloading">Downloading...</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="update_now">Update Now</string>
+    <string name="more">More</string>
+    <string name="send">Send</string>
+    <string name="input_message_hint">Type a message...</string>
+</resources>

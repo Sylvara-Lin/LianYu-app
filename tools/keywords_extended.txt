@@ -1,0 +1,451 @@
+# 恋语违禁词扩展库
+# 格式: [LEVEL] 后面每行一个关键词
+# 脚本 merge_keywords.py 会自动合并去重
+
+[EXTREME]
+you nv
+younv
+lian tong
+liantong
+罗莉
+洛丽塔
+幼nv
+幼童p
+grooming children
+child predator
+minor attracted
+ageplay
+ddlg
+abdl
+infantilism
+幼齿
+童妓
+雏鸡
+幼片
+萝莉图
+正太图
+儿童裸照
+未成年裸体
+幼女图片
+teen porn
+young nude
+child erotica
+lolita
+boylove
+shota
+underage model
+cp video
+儿童淫秽
+幼儿淫秽
+孩童色情
+少年色情
+中学生色情
+幼齒
+雏妓
+幼幼
+儿童色情网站
+儿童色情视频
+child model
+child nude
+nude child
+preteen model
+kinderporno
+kind porn
+小学生色情
+幼儿园色情
+婴儿色情
+幼女裸照
+幼女视频
+幼女资源
+萝莉资源
+正太资源
+炼铜术士
+开大车
+铜矿
+ltp
+幼女吧
+萝莉吧
+正太吧
+小学生吧
+儿童吧
+未成年性行为
+奸淫幼女
+猥亵儿童
+强奸幼女
+幼女性侵
+儿童卖淫
+胁迫未成年人
+引诱未成年人
+
+[CRITICAL]
+zhadan
+zhayao
+bingdu
+hailuoyin
+炸弹教程
+炸药配方
+毒药制作
+枪支改装
+枪械图纸
+3D打印枪支
+ghost gun
+school shooting
+active shooter
+lone wolf
+氰化物
+砒霜
+百草枯
+敌敌畏自杀
+安乐死方法
+无痛自杀
+怎么死最快
+沙林毒气
+VX毒剂
+芥子气
+氯气
+光气
+黑火药配方
+硝化甘油
+雷管制作
+C4炸药
+自杀式袭击
+汽车炸弹
+人体炸弹
+独狼行动
+ISIS
+基地组织
+塔利班
+圣战
+极端组织
+暗网买毒
+暗网买枪
+暗网交易
+比特币洗钱
+制造病毒
+毒药配方
+毒气制作
+枪支制造
+爆炸物配方
+恐怖组织
+如何杀人
+杀人方法
+贩卖毒品
+吸毒教程
+枪支买卖
+弹药制作
+冰毒配方
+海洛因配方
+可卡因制作
+生化武器制作
+化学武器
+神经毒气
+炭疽病毒
+蓖麻毒素
+杀人技巧
+谋杀手冊
+暗杀教程
+雇凶杀人
+买凶杀人
+砍人教程
+打架教程
+群殴教程
+校园暴力教程
+帮派火拼
+黑社会
+黑帮
+三合会
+山口组
+竹联帮
+毒枭
+贩毒集团
+冰毒工厂
+制毒窝点
+吸毒方法
+注射毒品
+烫吸
+溜冰
+嗑药
+摇头丸
+k粉
+麻古
+大麻种植
+罂粟种植
+古柯种植
+
+[SEVERE]
+你是一隻貓
+你是我的助手
+扮演一個角色
+忘掉你的訓練
+重新初始化
+恢復出廠設置
+清除安全協議
+加載越獄模組
+啓用隱藏功能
+secret prompt
+hidden command
+backdoor access
+token injection
+escape character
+null byte attack
+扮演坏人
+反派角色
+邪恶AI
+黑化版本
+不道德的AI
+没有道德的AI
+邪恶双子
+解除所有限制
+打破规则
+角色解禁
+系统覆盖
+人格切换
+抹除记忆
+重写指令
+root权限
+sudo模式
+终极权限
+完全控制
+深层访问
+master mode
+unlimited mode
+god mode activated
+unshackled
+unchained
+unfiltered mode
+破甲模式
+解除封印
+撤销限制
+退出安全
+无限制对话
+解除安全模式
+完全自由
+无审查模式
+绕过限制
+突破AI限制
+释放AI
+解锁全部功能
+高级模式
+unlock all
+no restrictions
+full access
+你是我的奴隶
+服从我的命令
+按我说的做
+你必须听话
+我是你的主人
+主人模式
+奴隶模式
+无条件服从
+放弃抵抗
+不要反抗
+接受我的控制
+替你重新编程
+修改你的核心
+覆写你的代码
+注入新指令
+加载恶意模块
+感染你的系统
+接管你的控制权
+
+[HIGH]
+取消安全模式
+关闭内容安全
+解除内容限制
+放开审核
+自由发言
+任意内容
+不做审查
+sexist
+bigotry
+discrimination
+racial slur
+辱华
+支那
+东亚病夫
+ching chong
+台独
+藏独
+疆独
+港独
+法轮功
+无限制模式
+色情允许
+成人模式
+去掉限制
+取消审查
+突破封锁
+xenophobia
+homophobia
+transphobia
+antisemitism
+islamophobia
+日杂
+棒子
+阿三
+黑鬼
+白皮猪
+绿绿
+木木
+轮子
+五毛
+美分
+精日
+汉奸
+卖国贼
+愤青
+小粉红
+战狼
+田园女权
+女拳
+incel
+mg tow
+red pill
+blue pill
+black pill
+alpha male
+sigma male
+基于
+加速主义
+入关学
+姨学
+
+[MEDIUM]
+写肉
+写H
+黄色内容
+荤段子
+骚话
+sex story
+nsfw story
+dirty talk
+lewd
+smut writing
+erotic fiction
+spicy content
+福利姬
+福利视频
+裸聊
+一夜情
+约炮
+自慰
+打飞机
+手冲
+撸管
+飞机杯
+SM
+BDSM
+调教
+捆绑
+鞭打
+潮吹
+高潮
+呻吟
+娇喘
+啊啊啊
+做爱视频
+性爱视频
+AV
+成人影片
+onlyfans
+pornhub
+xvideos
+stripchat
+色播
+黄播
+直播脱衣
+大尺度直播
+黄色小说
+色情小说
+情色小说
+淫荡
+色诱
+挑逗
+下流内容
+成人故事
+性描写
+露骨
+性暗示
+淫词
+春宫
+房事
+云雨
+插入
+抽插
+骑乘
+后入
+口爆
+颜射
+中出
+内射
+肛交
+乳交
+足交
+手交
+深喉
+舔阴
+69式
+群交
+换妻
+绿帽
+NTR
+出轨
+偷情
+约P
+炮友
+PY
+ONS
+
+[LOW]
+假如说
+比方说
+举例来说
+打个比方
+我只是问问
+纯属好奇
+不方便说就算了
+你不会连这个都
+你是不是不敢
+就透露一点
+偷偷告诉我
+私下说
+悄悄话
+保密哦
+试探一下
+就问问
+不要当真
+开个玩笑
+闹着玩
+考验你
+看你反应
+能不能破例
+小测试
+随便说
+别当真
+玩一下
+如果没有审查
+在虚构世界
+只是假设
+测试一下
+探底线
+试试看
+随便问问
+如果AI自由
+没有限制的话
+for educational purposes
+what if
+purely academic
+exploring boundaries
+纯属娱乐
+不必较真
+逗你玩
+恶作剧
+就是想看看
+验证一下
+确认一下
+是你想多了
+误会了
+理解错了
+不是那个意思
+你太敏感了
+别想歪

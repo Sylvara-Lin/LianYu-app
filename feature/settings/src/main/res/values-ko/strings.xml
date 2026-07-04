@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_title">언어 설정</string>
+    <string name="language_simplified_chinese">간체 중국어</string>
+    <string name="language_traditional_chinese">번체 중국어</string>
+    <string name="language_english">영어</string>
+    <string name="language_japanese">일본어</string>
+    <string name="language_korean">한국어</string>
+    <string name="cd_back">뒤로</string>
+    <string name="cd_selected">선택됨</string>
+    <string name="back">뒤로</string>
+
+    <!-- Experimental Features -->
+    <string name="experimental_features">실험적 기능</string>
+    <string name="experimental_features_desc">아직 정식 출시되지 않은 테스트 기능 탐색</string>
+    <string name="experimental_features_hint">다음 기능은 실험 단계이며 불안정할 수 있습니다. 주의해서 활성화하세요.</string>
+
+    <string name="theme_title">테마</string>
+    <string name="theme_light">라이트</string>
+    <string name="theme_light_desc">밝은 인터페이스 스타일</string>
+    <string name="theme_dark">다크</string>
+    <string name="theme_dark_desc">눈에 편안한 다크 스타일</string>
+    <string name="theme_system">시스템 따라가기</string>
+    <string name="theme_system_desc">자동으로 라이트/다크 전환</string>
+
+    <string name="settings_title">API 설정</string>
+    <string name="settings_hint">카드를 탭하여 API 설정</string>
+    <string name="configured">설정 완료</string>
+    <string name="click_config">탭하여 설정</string>
+    <string name="configuring">설정 중...</string>
+    <string name="api_key">API 키</string>
+    <string name="base_url">Base URL</string>
+    <string name="model">모델</string>
+    <string name="temperature">온도</string>
+    <string name="max_tokens">최대 토큰 수 (선택)</string>
+    <string name="save_config">설정 저장</string>
+    <string name="save_success">설정이 저장되었습니다</string>
+    <string name="save_failed">저장 실패</string>
+
+    <string name="framerate_title">프레임 레이트</string>
+    <string name="screen_refresh_rate">화면 주사율</string>
+    <string name="framerate_hint">자동 모드는 기기 성능에 따라 최적의 프레임 레이트를 자동으로 맞춥니다. 높은 프레임 레이트는 배터리 소모를 증가시킬 수 있습니다.</string>
+
+    <string name="check_update_title">새 버전 확인</string>
+    <string name="current_version">현재 버전</string>
+    <string name="check_update_btn">업데이트 확인</string>
+    <string name="latest_version">최신 버전입니다</string>
+    <string name="check_failed">확인 실패</string>
+    <string name="check_failed_msg">GitHub에 연결할 수 없습니다. 네트워크를 확인하고 다시 시도해 주세요</string>
+    <string name="new_version_found">새 버전 %1$s 발견</string>
+    <string name="downloading">다운로드 중 %1$d%%</string>
+    <string name="download_complete">다운로드 완료, 설치 중...</string>
+    <string name="download_failed">다운로드 실패, 네트워크를 확인하고 다시 시도해 주세요</string>
+    <string name="update_now">지금 업데이트</string>
+</resources>

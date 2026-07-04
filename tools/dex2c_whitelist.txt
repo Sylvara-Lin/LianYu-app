@@ -1,0 +1,8 @@
+# LianYu Dex2C Class-Merge Whitelist
+# @class = merge ALL methods in class into one switch-dispatch native function
+# @class Foo:methodA,methodB = merge only specific methods
+# Legacy single-method format still supported (auto-grouped)
+@class com.lianyu.ai.security.KmsProvider
+@class com.lianyu.ai.security.Sm4Cipher
+@class com.lianyu.ai.security.SecurityOrchestrator
+@class com.lianyu.ai.security.CompositeVmpRuntime

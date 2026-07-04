@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="coffee_title">瑞幸咖啡</string>
+    <string name="coffee_token_config">MCP Token 配置</string>
+    <string name="coffee_token_hint">访问 open.lkcoffee.com/mcp 登录获取</string>
+    <string name="coffee_token_save">保存 Token</string>
+    <string name="coffee_token_empty">请先配置瑞幸 MCP Token</string>
+    <string name="coffee_token_invalid">Token 无效或已过期，请重新获取</string>
+    <string name="coffee_search_shop">查找门店</string>
+    <string name="coffee_search_product">搜索商品</string>
+    <string name="coffee_confirm_shop">确认门店</string>
+    <string name="coffee_confirm_order">确认订单</string>
+    <string name="coffee_preview_order">预览订单</string>
+    <string name="coffee_pay">支付</string>
+    <string name="coffee_order_status">订单状态</string>
+    <string name="coffee_delivery_rejected">目前仅支持到店自取哦</string>
+    <string name="coffee_loading">加载中…</string>
+    <string name="coffee_retry">重试</string>
+    <string name="coffee_no_shops">未找到门店，请更换位置重试</string>
+    <string name="coffee_no_products">未找到相关商品</string>
+    <string name="coffee_pay_qr">扫码支付</string>
+    <string name="coffee_pay_link">打开支付链接</string>
+    <string name="coffee_order_created">订单已创建，请扫码支付</string>
+    <string name="coffee_take_code">取餐码</string>
+    <string name="coffee_cancel_order">取消订单</string>
+    <string name="coffee_cancel_confirm">确认取消此订单？</string>
+    <string name="coffee_cancel_success">订单已取消</string>
+    <string name="coffee_cancel_failed">取消失败，请重试</string>
+    <string name="coffee_location_needed">需要定位权限来查找附近门店</string>
+    <string name="coffee_grant_location">授予定位权限</string>
+    <string name="coffee_manual_location">手动输入地址</string>
+    <string name="coffee_switch_failed">该商品暂不支持切换规格，将使用默认规格</string>
+    <string name="coffee_network_error">网络错误，请检查连接</string>
+    <string name="coffee_price_original">原价</string>
+    <string name="coffee_price_discount">优惠</string>
+    <string name="coffee_price_final">应付</string>
+    <string name="coffee_pay_after">支付完成后告诉我一声，我可以马上帮你查询订单状态和取餐码。</string>
+    <string name="coffee_pay_done">已支付，帮我查取餐码</string>
+    <string name="coffee_pay_pending">还没支付，稍后再查</string>
+</resources>

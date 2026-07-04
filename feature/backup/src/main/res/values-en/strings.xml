@@ -1,0 +1,11 @@
+<resources>
+    <string name="backup_title">Data Backup</string>
+    <string name="backup_back">Back</string>
+    <string name="backup_export_title">Export Backup</string>
+    <string name="backup_export_desc">Export all chat data as an encrypted backup file for local storage or device transfer</string>
+    <string name="backup_export_btn">Export</string>
+    <string name="backup_import_title">Import Backup</string>
+    <string name="backup_import_desc">Restore data from a backup file. This will overwrite all current data.</string>
+    <string name="backup_import_btn">Import</string>
+    <string name="backup_notice">💡 Notes:\n• Backup files are password-protected — keep your password safe\n• Importing will erase and replace all current chat data\n• Media files (images, audio) are not included in backups\n• Export regularly to prevent data loss</string>
+</resources>

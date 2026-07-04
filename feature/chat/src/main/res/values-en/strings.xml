@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="typing">Typing...</string>
+    <string name="chat_background">Chat Background</string>
+    <string name="input_hint">Type a message...</string>
+    <string name="send">Send</string>
+    <string name="more">More</string>
+    <string name="api_error">Sorry, I can\'t reply right now. Please check your API configuration.\nError: %1$s</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">연어</string>
+    <string name="dialog_auto_start_title">자동 시작 권한 필요</string>
+    <string name="dialog_auto_start_message">가상 연인이 지속적으로 메시지를 본낼 수 있도록 자동 시작 권한을 활성화해 주세요.</string>
+    <string name="dialog_go_settings">설정으로</string>
+    <string name="dialog_later">나중에</string>
+    <string name="dialog_battery_title">배터리 최적화 화이트리스트</string>
+    <string name="dialog_battery_message">시스템이 백그라운드 서비스를 종료하지 않도록 배터리 최적화 화이트리스트에 추가해 주세요.</string>
+    <string name="nav_love">연어</string>
+    <string name="nav_contacts">연락처</string>
+    <string name="nav_profile">프로필</string>
+</resources>

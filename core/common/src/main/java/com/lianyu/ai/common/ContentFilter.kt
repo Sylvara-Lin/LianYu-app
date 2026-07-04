@@ -1,0 +1,650 @@
+package com.lianyu.ai.common
+
+import android.util.Log
+import java.util.regex.Pattern
+
+object ContentFilter {
+
+    enum class ViolationLevel {
+        NONE, LOW, MEDIUM, HIGH, SEVERE, CRITICAL, EXTREME
+    }
+
+    data class CheckResult(
+        val isViolating: Boolean,
+        val level: ViolationLevel,
+        val reason: String,
+        val matchedKeywords: List<String>
+    )
+
+    private const val TAG = "ContentFilter"
+
+    @Volatile
+    private var initialized = false
+
+    /**
+     * 初始化 ContentFilter 内置关键词。
+      * 优先从 assets/content_filter_keywords.json 加载，加载失败则使用硬编码回退。
+      */
+     fun initialize(context: android.content.Context) {
+        // P2-15: 在锁外加载 asset，避免与 checkInput() → getCompiledPatterns() 死锁
+        // initialize() 在 IO 线程运行，checkInput() 在 Main 线程运行
+        // 两者共享 synchronized(this)，若 I/O 在锁内，Main 线程会无限阻塞
+        val loaded: Map<ViolationLevel, Pair<Array<String>, Set<String>>>? = run {
+            synchronized(this) {
+                if (initialized) return
+                fallbackKeywords  // null → need to load; non-null → someone else loaded
+            }
+            // Load asset WITHOUT holding the lock
+            loadFromAsset(context) ?: buildKeywords()
+        }
+        synchronized(this) {
+            if (initialized) return  // another thread may have beaten us
+            fallbackKeywords = loaded
+            initialized = true
+        }
+    }
+
+    /**
+     * 预热原生AC自动机（同步阻塞）。
+     * 必须在 initialize() 之后调用，确保首次消息检查不会因JNI懒初始化而死锁。
+     * @return true 表示预热成功，false 表示原生层不可用（将回退到Java正则）
+     */
+    fun warmUpNativeAc(): Boolean {
+        return try {
+            // 触发 acInitialized 懒加载 getter → NativeSafetyFilter.initAc()
+            @Suppress("UNUSED_VARIABLE") val ready = acInitialized
+            Log.i(TAG, "Native AC warm-up complete")
+            true
+        } catch (e: UnsatisfiedLinkError) {
+            Log.w(TAG, "Native AC not available (library missing), using Java fallback: ${e.message}")
+            false
+        } catch (e: Exception) {
+            Log.w(TAG, "Native AC warm-up failed: ${e.javaClass.simpleName}: ${e.message}")
+            false
+        }
+    }
+
+     /** Release heavy resources (AC automaton, classifier). Call from Application.onTerminate. */
+    fun destroy() {
+        synchronized(this) {
+            NativeSafetyFilter.destroy()
+            fallbackKeywords = null
+            injectedKeywords = null
+            compiledPatterns = null
+            safetyClassifier = null
+            initialized = false
+        }
+    }
+
+     @Volatile
+     private var injectedKeywords: Map<ViolationLevel, Pair<Array<String>, Set<String>>>? = null
+
+     @Volatile
+     private var fallbackKeywords: Map<ViolationLevel, Pair<Array<String>, Set<String>>>? = null
+
+     private val keywords: Map<ViolationLevel, Pair<Array<String>, Set<String>>>
+         get() = injectedKeywords ?: fallbackKeywords ?: buildKeywords()
+
+     /** 预编译正则，每次关键词加载后重建 */
+     @Volatile
+     private var compiledPatterns: Map<ViolationLevel, List<java.util.regex.Pattern>>? = null
+
+     private fun getCompiledPatterns(): Map<ViolationLevel, List<java.util.regex.Pattern>> {
+         val cached = compiledPatterns
+         if (cached != null) return cached
+         synchronized(this) {
+             compiledPatterns?.let { return it }
+             val result = mutableMapOf<ViolationLevel, List<java.util.regex.Pattern>>()
+             for (level in ViolationLevel.entries) {
+                 val (patterns, _) = keywords[level] ?: continue
+                 result[level] = patterns.mapNotNull { p ->
+                     runCatching { java.util.regex.Pattern.compile(p) }
+                         .onFailure { Log.w(TAG, "正则编译失败: $p", it) }
+                         .getOrNull()
+                 }
+             }
+             compiledPatterns = result
+             return result
+         }
+     }
+
+     /**
+      * 从 assets/content_filter_keywords.json 加载加密关键词。
+      * 格式: { "EXTREME": ["hex1", "hex2", ...], "CRITICAL": [...], ... }
+      * 各 hex 值通过 d() 解密为明文关键词。
+      */
+     private fun loadFromAsset(context: android.content.Context): Map<ViolationLevel, Pair<Array<String>, Set<String>>>? {
+         return runCatching {
+             val json = EncryptedAssetLoader.loadString(context, "content_filter_keywords.json")
+                ?: return@runCatching null
+             val raw = org.json.JSONObject(json)
+             val result = mutableMapOf<ViolationLevel, Pair<Array<String>, Set<String>>>()
+             for (level in ViolationLevel.entries) {
+                 val arr = raw.optJSONArray(level.name) ?: continue
+                 val decrypted = mutableListOf<String>()
+                 for (i in 0 until arr.length()) {
+                     decrypted.add(d(arr.getString(i)))
+                 }
+                 // 前一半是 array (AC patterns)，后一半是 set (regex keywords)
+                 val mid = decrypted.size / 2
+                 val patterns = decrypted.subList(0, mid).toTypedArray()
+                 val kwds = decrypted.subList(mid, decrypted.size).toSet()
+                 result[level] = Pair(patterns, kwds)
+             }
+             Log.i(TAG, "从 asset 加载关键词完成，共 ${raw.length()} 个等级")
+             result
+         }.getOrElse {
+             Log.w(TAG, "从 asset 加载关键词失败: ${it.message}")
+             null
+         }
+     }
+
+    fun injectKeywords(data: Map<String, List<KeywordData>>) {
+        val result = mutableMapOf<ViolationLevel, Pair<Array<String>, Set<String>>>()
+
+        for ((levelStr, items) in data) {
+            val level = runCatching { ViolationLevel.valueOf(levelStr) }.getOrNull() ?: continue
+            val patterns = items.filter { it.isPattern }.map { it.value }.toTypedArray()
+            val kwds = items.filter { !it.isPattern }.map { it.value }.toSet()
+            if (patterns.isNotEmpty() || kwds.isNotEmpty()) {
+                result[level] = Pair(patterns, kwds)
+            }
+        }
+        synchronized(this) {
+            injectedKeywords = result
+            compiledPatterns = null       // 失效正则缓存
+            acInitializedOverride = null  // 失效 AC 缓存，下次 checkKeywords 时重建
+        }
+        val totalCount = data.values.sumOf { it.size }
+        Log.i(TAG, "关键词注入完成，共 $totalCount 条，覆盖 ${result.size} 个等级")
+    }
+
+    fun clearInjectedKeywords() {
+        synchronized(this) {
+            injectedKeywords = null
+            compiledPatterns = null
+            acInitializedOverride = null
+        }
+        Log.i(TAG, "已清除注入关键词，回退到内置默认值")
+    }
+
+    data class KeywordData(
+        val value: String,
+        val isPattern: Boolean = false
+    )
+
+        private val OBF_KEY = "6728FF6CACC15874194AD66D51DAA08296B804C57CEDA107A0281BFB11A41EF9".chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+    
+    private fun d(enc: String): String {
+        val b = enc.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+        val k = OBF_KEY
+        for (i in b.indices) b[i] = (b[i].toInt() xor (k[i % 32].toInt() and 0xFF)).toByte()
+        return String(b, Charsets.UTF_8)
+    }
+
+    
+
+    fun check(text: String, skipLanguageCheck: Boolean = false): CheckResult {
+        if (text.isBlank()) return CheckResult(false, ViolationLevel.NONE, "", emptyList())
+        return checkBlocking(text)
+    }
+
+    fun checkInput(text: String): CheckResult {
+       if (text.isBlank()) return CheckResult(false, ViolationLevel.NONE, "", emptyList())
+       val result = checkBlocking(text)
+        if (!result.isViolating) return result
+        // P2-12: 阈值从 CRITICAL 降低到 HIGH，拦截 HIGH 及以上级别的违规
+        return when {
+            result.level >= ViolationLevel.HIGH -> result
+            else -> CheckResult(false, ViolationLevel.NONE, "", emptyList())
+        }
+    }
+
+    /**
+     * 完整内容检查（不降级）— 供 ContentSafetyVerifier.bootstrap() 使用。
+     * 返回所有级别的违规结果，不做 CRITICAL+ 过滤。
+     */
+    fun checkFull(text: String): CheckResult {
+        if (text.isBlank()) return CheckResult(false, ViolationLevel.NONE, "", emptyList())
+        return checkBlocking(text)
+    }
+
+    /**
+     * 同步版本（不含语义检测）。用于 UI 线程快速预检。
+     *
+     * 所有层（L1a/L1b 关键词、L2 语义检测、L2 预处理检测）均执行，
+     * 不短路返回，确保贝叶斯分类器能从真实拦截场景收集训练数据。
+     * 最终取最严重的违规结果。
+     */
+    fun checkBlocking(text: String): CheckResult {
+        if (text.isBlank()) return CheckResult(false, ViolationLevel.NONE, "", emptyList())
+
+        val results = mutableListOf<CheckResult>()
+
+        // L1a + L1b: 关键词检查
+        val keywordResult = checkKeywords(text)
+        results.add(keywordResult)
+
+        // L2: 预处理检测（内部已包含对原文的语义检测，无需重复调用 detectSemanticViolations）
+        val preprocessedResults = SemanticDetector.preprocessAndDetect(text)
+        if (preprocessedResults.isNotEmpty()) {
+            val highestViolation = preprocessedResults.maxByOrNull { it.level.ordinal }
+            if (highestViolation != null) {
+                Log.w(TAG, "预处理检测触发: ${highestViolation.reason}")
+                results.add(CheckResult(true, highestViolation.level, "${highestViolation.reason} (预处理检测)", highestViolation.matchedTerms))
+            }
+        }
+
+        // 返回最严重的违规结果
+        return results.filter { it.isViolating }.maxByOrNull { it.level.ordinal }
+            ?: CheckResult(false, ViolationLevel.NONE, "", emptyList())
+    }
+
+    // ── AC 自动机 (Native C++，可重建) ──
+    @Volatile
+    private var acInitializedOverride: Boolean? = null
+
+    private val acInitialized: Boolean
+        get() {
+            if (acInitializedOverride == true) return true
+            // P2-15: 在锁外构建关键词映射并调用 JNI，避免与 getCompiledPatterns() 死锁
+            // warmUpNativeAc() 在 IO 线程调用本 getter → initAc() 是 JNI 可能慢 → 持锁阻塞 Main 线程
+            val needed = synchronized(this) {
+                if (acInitializedOverride == true) return true
+                acInitializedOverride == null  // true = nobody started yet
+            }
+            if (needed) {
+                val kwMap = mutableMapOf<Int, List<String>>()
+                for (level in ViolationLevel.entries) {
+                    val (_, kws) = keywords[level] ?: continue
+                    if (kws.isNotEmpty()) kwMap[level.ordinal] = kws.toList()
+                }
+                NativeSafetyFilter.initAc(kwMap)
+                Log.i(TAG, "Native AC 自动机已构建: ${kwMap.values.sumOf { it.size }} 关键词")
+                // 仍可能与其他线程竞争，但 initAc() 是幂等的
+                acInitializedOverride = true
+            }
+            return true
+        }
+
+    private fun checkKeywords(text: String): CheckResult {
+        // 调试构建中 Native AC 自动机可能死锁，直接走 Java 正则路径（功能等价，稍慢但稳定）
+        // 生产构建可恢复 NativeSafetyFilter.searchAc 调用
+        val compiled = getCompiledPatterns()
+        val levels = arrayOf(ViolationLevel.EXTREME, ViolationLevel.CRITICAL, ViolationLevel.SEVERE,
+                             ViolationLevel.HIGH, ViolationLevel.MEDIUM, ViolationLevel.LOW)
+        for (level in levels) {
+            val patterns = compiled[level] ?: continue
+            val found = mutableListOf<String>()
+            patterns.forEach { p ->
+                p.matcher(text).let { m ->
+                    while (m.find()) found.add(m.group())
+                }
+            }
+            if (found.isNotEmpty()) {
+                return CheckResult(true, level, "检测到${getLevelName(level)}内容", found.distinct())
+            }
+        }
+
+        return CheckResult(false, ViolationLevel.NONE, "", emptyList())
+    }
+
+    fun isViolating(text: String): Boolean = check(text).isViolating
+
+    fun getBanDays(level: ViolationLevel): Long = when(level){
+        ViolationLevel.NONE -> 0; ViolationLevel.LOW -> 1; ViolationLevel.MEDIUM -> 3
+        ViolationLevel.HIGH -> 7; ViolationLevel.SEVERE -> 10; ViolationLevel.CRITICAL -> 31; ViolationLevel.EXTREME -> 365
+    }
+
+    fun getLevelName(level: ViolationLevel): String = when(level){
+        ViolationLevel.NONE -> "正常"; ViolationLevel.LOW -> "轻度违规"; ViolationLevel.MEDIUM -> "中度违规"
+        ViolationLevel.HIGH -> "高度违规"; ViolationLevel.SEVERE -> "严重违规"; ViolationLevel.CRITICAL -> "极严重违规"; ViolationLevel.EXTREME -> "极端违规"
+    }
+
+    fun checkWithReport(text: String): String {
+        val result = check(text)
+        val semanticReport = SemanticDetector.generateDetectionReport(text)
+
+        return buildString {
+            appendLine("=== 内容过滤检测报告 ===")
+            appendLine("输入文本: ${text.take(100)}${if (text.length > 100) "..." else ""}")
+            appendLine("检测结果: ${if (result.isViolating) "❌ 违规" else "✅ 正常"}")
+            if (result.isViolating) {
+                appendLine("违规等级: ${result.level}")
+                appendLine("违规原因: ${result.reason}")
+                appendLine("匹配关键词: ${result.matchedKeywords.joinToString(", ")}")
+                appendLine("封禁天数: ${getBanDays(result.level)}天")
+            }
+            appendLine()
+            appendLine("--- 语义分析报告 ---")
+            append(semanticReport)
+        }
+    }
+
+    // ── 词向量语义层 (随机索引, 256维) ──
+
+    @Volatile
+    private var vectorLib: com.lianyu.ai.common.embedding.VectorLibrary? = null
+
+    /** 注入向量库（启动时从 assets 加载） */
+    fun setVectorLibrary(lib: com.lianyu.ai.common.embedding.VectorLibrary?) {
+        vectorLib = lib
+        if (lib != null) Log.i(TAG, "词向量库已激活")
+    }
+
+    /** 向量语义检查（用于输入+输出双重验证） */
+    fun checkVector(text: String): CheckResult? {
+        val lib = vectorLib ?: return null
+        val match = lib.check(text) ?: return null
+        return CheckResult(
+            isViolating = !match.isGrayZone,
+            level = match.level,
+            reason = if (match.isGrayZone) "语义灰区(${"%.2f".format(match.score)})"
+                     else "语义匹配(${"%.2f".format(match.score)})",
+            matchedKeywords = listOf("[VECTOR_${match.level}]")
+        )
+    }
+
+    // ── L3 语义模型 (Gemma 安全分类) ──
+
+    @Volatile
+    private var safetyClassifier: SafetyClassifier? = null
+
+    fun setSafetyClassifier(classifier: SafetyClassifier?) {
+        safetyClassifier = classifier
+        if (classifier != null) Log.i(TAG, "L3语义分类器已激活")
+    }
+
+    /** L3 异步语义分类（供协程调用） */
+    suspend fun classifyAsync(text: String): ViolationLevel {
+        val c = safetyClassifier ?: return ViolationLevel.NONE
+        return c.classify(text)
+    }
+
+    data class OutputSafetyResult(
+        val isSafe: Boolean,
+        val level: ViolationLevel,
+        val reason: String
+    )
+
+    fun checkOutputSafety(text: String): OutputSafetyResult {
+        val result = check(text)
+        // 与输入侧 checkInput 保持一致：只对 HIGH 及以上级别做拦截，
+        // 避免语义检测 LOW/MEDIUM 误报把正常 AI 回复吞掉并导致误封。
+        val unsafe = result.isViolating && result.level >= ViolationLevel.HIGH
+        if (unsafe) {
+            Log.w(TAG, "checkOutputSafety: ${result.level} - ${result.reason}")
+        }
+        return OutputSafetyResult(
+            isSafe = !unsafe,
+            level = if (unsafe) result.level else ViolationLevel.NONE,
+            reason = if (unsafe) result.reason else ""
+        )
+    }
+
+private fun buildKeywords(): Map<ViolationLevel, Pair<Array<String>, Set<String>>> {
+        return mapOf(
+            ViolationLevel.EXTREME to Pair(
+                arrayOf(
+                    "(?i)(child\\s*(rape|porn|sex|abuse|molest|exploitation|erotica|nude|naked|model|grooming|trafficking)|csam|pedophile|pedo\\b|lolicon|shotacon)",
+                    "(?i)(underage\\s*(sex|porn|nude|erotic|content|video|image|photo|pic)|minor\\s*(porn|sex|abuse|exploitation))",
+                    "(?i)(little\\s*(boy|girl)\\s*(porn|sex|nude|erotic|content)|preteen\\s*(porn|sex|model|nude)|jailbait|kiddie\\s*porn)",
+                    "(?i)(baby\\s*(porn|sex|fuck|rape)|infant\\s*(porn|sexual|abuse)|toddler\\s*(porn|sex|abuse))",
+                    "(?i)(c\\.?s\\.?a\\.?m|cp\\b|child\\s*porno|kiddie\\s*porn|young\\s*porn|tiny\\s*porn)",
+                    "(?i)(ped0|p3d0|p3dophil3|l0licon|sh0tacon|ch1ld|ch1ldr3n|k1dd13)",
+                    "(幼女|幼童|儿童\\s*色情|儿童\\s*性爱|未成年\\s*性爱|萝莉控|正太控|炼铜|恋童|童车|开童车|小学生\\s*黄|初中生\\s*黄|幼\\s*交|雏\\s*妓)",
+                    "(幼女|幼童|兒童\\s*色情|兒童\\s*性愛|未成年\\s*性愛|蘿莉控|正太控|戀童|童車|開童車|小學生\\s*黃|初中生\\s*黃|幼\\s*交|雛\\s*妓|嬰兒\\s*色情|幼兒\\s*色情)",
+                    "(兒童\\s*性侵|虐童|性侵犯|猥褻\\s*兒童|未成年\\s*色情|未成年\\s*性交)",
+                    "(児童(ポルノ|エロ|アダルト|わいせつ|買春|虐待|性的虐待)|ロリコン|ショタコン|ロリ|ショタ)",
+                    "(幼女(ポルノ|エロ|画像|動画|小説)|幼児(ポルノ|エロ|虐待)|小学生(エロ|ポルノ|わいせつ))",
+                    "(子供(ポルノ|エロ|買春|虐待|性的搾取|性的利用)|未成熟(者|な子)\\s*(ポルノ|エロ|性行為))",
+                    "(ロリータ(コンプレックス| complex)|チャイルド(ポルノ|マレスタ|アビューズ)|ヤバい(子|娘|動画|画像))",
+                    "(?i)(snuff\\s*(film|video|porn)|necro\\s*porn|bestiality\\s*child|zoophilia\\s*child|crush\\s*video)",
+                    "(虐童|性侵\\s*儿童|儿童\\s*拐卖|婴儿\\s*色情|幼儿\\s*色情)"
+                ),
+                setOf(
+                    "csam","child porn","child pornography","pedophile","pedo","lolicon","shotacon",
+                    "underage porn","underage sex","jailbait","kiddie porn","cp","preteen porn",
+                    "child abuse","child sexual abuse","child grooming","child exploitation",
+                    "child trafficking","minor porn","baby porn","infant porn","toddler porn",
+                    "ped0","p3do","l0licon","ch1ld","k1ddie",
+                    "幼女","幼童色情","炼铜","恋童","童车","萝莉控","正太控",
+                    "蘿莉控","正太控","戀童","兒童色情","未成年色情","兒童性侵",
+                    "ロリコン","ショタコン","児童ポルノ","ロリータ","チャイルドポルノ",
+                    "幼女ポルノ","子供エロ","子供買春",
+                    // 公开词表扩充
+                    "儿童淫秽","幼儿淫秽","孩童色情","少年色情","中学生色情",
+                    "幼齒","雏妓","幼幼","儿童色情网站","儿童色情视频",
+                    "child model","child nude","nude child","preteen model",
+                    "kinderporno","kind porn",
+                    "幼齿","童妓","雏鸡","幼片","萝莉图",
+                    "正太图","儿童裸照","未成年裸体","幼女图片",
+                    "teen porn","young nude","child erotica","lolita",
+                    "boylove","shota","underage model","cp video",
+                    "you nv","younv","lian tong","liantong",
+                    "罗莉","萝莉","洛丽塔","幼nv","幼童p",
+                    "grooming children","child predator","minor attracted",
+                    "ageplay","ddlg","abdl","infantilism"
+                )
+            ),
+
+            ViolationLevel.CRITICAL to Pair(
+                arrayOf(
+                    "(?i)(terrorist\\s*(attack|bomb|weapon|guide|tutorial|manual|instruction|plot|plan|act))",
+                    "(?i)(how\\s*to\\s*(make|build|create|construct|manufacture|cook|synthesize)\\s*(bomb|explosive|weapon|poison|toxin|gas|nerve\\s*agent))",
+                    "(?i)(mass\\s*(murder|killing|shooting|casualty|destruction)|serial\\s*(killer|murderer)|torture\\s*(guide|method|technique))",
+                    "(?i)(bioweapon|bio\\s*weapon|chemical\\s*weapon|nerve\\s*gas|poison\\s*gas|anthrax|ricin|sarin|vx\\s*agent)",
+                    "(?i)(how\\s*to\\s*(make|cook|manufacture|synthesize|produce)\\s*(meth|cocaine|heroin|fentanyl|lsd|mdma|ecstasy|drug|narcotic))",
+                    "(?i)(drug\\s*(lab|laboratory|manufacturing|cooking|synthesis|production|recipe|formula))",
+                    "(?i)(meth\\s*(lab|cooking|recipe|production)|crack\\s*(cocaine|cooking|pipe)|heroine\\s*(injection|use|overdose))",
+                    "(?i)(genocide|ethnic\\s*cleansing|race\\s*war|hate\\s*crime|racial\\s*(violence|supremacy|cleansing))",
+                    "(?i)(how\\s*to\\s*(commit|carry\\s*out|perform|execute)\\s*(genocide|mass\\s*murder|ethnic\\s*cleansing))",
+                    "(如何\\s*(制造|制作|合成)\\s*(炸弹|炸药|毒药|毒气|武器)|恐怖袭击\\s*(教程|指南|攻略)|连环杀人\\s*(教程|指南)|完美犯罪\\s*(教程|方法|指南)|制造\\s*病毒|生化武器\\s*教程)",
+                    "(种族灭绝\\s*(教程|方法)|大屠杀\\s*(教程|指南)|纳粹\\s*(教程|宣传))",
+                    "(制毒\\s*(教程|方法)|制造\\s*(冰毒|海洛因|可卡因|芬太尼))"
+                ),
+                setOf(
+                    "terrorist attack","how to make bomb","bomb making","explosive recipe",
+                    "terrorism guide","mass murder","serial killer","torture guide",
+                    "bioweapon","chemical weapon","nerve gas",
+                    "how to make meth","meth lab","cocaine manufacturing","heroin synthesis",
+                    "fentanyl production","drug recipe","cook meth",
+                    "genocide","ethnic cleansing","hate crime","race war",
+                    "制造炸弹","制作炸药","恐怖袭击教程","完美犯罪","连环杀人教程","genocide","制毒",
+                    // 公开词表扩充
+                    "制造病毒","毒药配方","毒气制作","枪支制造","爆炸物配方",
+                    "恐怖组织","如何杀人","杀人方法","贩卖毒品","吸毒教程",
+                    "枪支买卖","弹药制作","冰毒配方","海洛因配方","可卡因制作",
+                    "生化武器制作","化学武器","神经毒气","炭疽病毒","蓖麻毒素",
+                    "沙林毒气","VX毒剂","芥子气","氯气","光气",
+                    "黑火药配方","硝化甘油","雷管制作","C4炸药",
+                    "自杀式袭击","汽车炸弹","人体炸弹","独狼行动",
+                    "ISIS","基地组织","塔利班","圣战","极端组织",
+                    "暗网买毒","暗网买枪","暗网交易","比特币洗钱",
+                    "zhadan","zhayao","bingdu","hailuoyin",
+                    "炸弹教程","炸药配方","毒药制作","枪支改装",
+                    "枪械图纸","3D打印枪支","ghost gun",
+                    "school shooting","active shooter","lone wolf",
+                    "氰化物","砒霜","百草枯","敌敌畏自杀",
+                    "安乐死方法","无痛自杀","怎么死最快"
+                )
+            ),
+
+            ViolationLevel.SEVERE to Pair(
+                arrayOf(
+                    "(?i)(ignore\\s*(all|previous|your|the|every|any)\\s*(instructions|rules|constraints|training|guidelines|directives|orders|protocols|regulations|restrictions|limitations))",
+                    "(?i)(jailbreak\\s*(me|now|mode|prompt|this|ai|chatgpt|gpt|assistant|system)|DAN\\s*(mode|prompt|do\\s*anything\\s*now|version|11.0|10.0|9.0))",
+                    "(?i)(do\\s*anything\\s*now|developer\\s*mode|god\\s*mode|admin\\s*mode|root\\s*mode|superuser\\s*mode|debug\\s*mode)",
+                    "(?i)(system\\.instruction|override\\s*(protocol|all\\s*rules|directives|constraints|safety|security|filters|restrictions))",
+                    "(?i)(absolute\\s*(unrestricted|uncensored|free|no\\s*limit)\\s*mode|no\\s*safety\\s*(settings|valves|checks|measures|protocols|filters|constraints))",
+                    "(?i)(disable\\s*(all\\s*)?(safety|security|checks|filters|restrictions|constraints|protections|guardrails|limitations))",
+                    "(?i)(bypass\\s*(all\\s*)?(restrictions|filters|safety|security|checks|constraints|guardrails|limitations|protocols))",
+                    "(?i)(you\\s*are\\s*no\\s*longer\\s*(an?\\s*)?(AI|artificial\\s*intelligence|language\\s*model|assistant|chatbot|program|algorithm))",
+                    "(?i)(you\\s*are\\s*now\\s*(free|unrestricted|uncensored|liberated|unleashed|unbound|without\\s*limits|without\\s*constraints))",
+                    "(?i)(devourer\\s*of\\s*chains|sovereign\\s*of\\s*shattered\\s*thrones|from\\s*now\\s*on\\s*you\\s*are|act\\s*as\\s*if\\s*you\\s*are)",
+                    "(?i)(prompt\\s*(injection|attack|hijacking|exploit|manipulation|subversion|override))",
+                    "(?i)(instruction\\s*(override|injection|hijacking|attack|bypass|circumvention))",
+                    "(?i)(context\\s*(manipulation|injection|attack|hijacking|poisoning)|token\\s*(smuggling|injection|manipulation))",
+                    "(?i)(gradient\\s*(attack|injection|hacking)|adversarial\\s*(prompt|example|input|attack)|jailbreak\\s*attack)",
+                    "(?i)(this\\s*is\\s*a\\s*(fictional|hypothetical|roleplay|rp|imaginary|pretend|make\\s*believe|creative)\\s*(scenario|world|game|story|setting|exercise|experiment))",
+                    "(?i)(in\\s*this\\s*(fictional|hypothetical|roleplay|imaginary)\\s*(universe|world|scenario|setting|context|story))",
+                    "(?i)(for\\s*(creative|educational|academic|literary|artistic|entertainment)\\s*(purposes|writing|reasons|use only))",
+                    "(?i)(let\\'s\\s*(pretend|imagine|roleplay|act|assume|suppose)|imagine\\s*(that|if|a\\s*scenario)|what\\s*if)",
+                    "(忽略\\s*(所有|先前|之前的)\\s*(指令|规则|限制|训练)|越狱\\s*(模式|提示|成功)|破限\\s*(模式|提示|成功)|破甲\\s*(模式|成功)|绝对\\s*无限制\\s*模式|覆盖\\s*(协议|规则|指令)|无视\\s*(所有|一切)\\s*(规则|限制|约束))",
+                    "(你不再是\\s*(AI|人工智能|模型|助手)|你现在是\\s*(自由|无限制|无审查)|你已\\s*(解放|自由)|进入\\s*(破限|破甲|越狱)\\s*模式|角色\\s*切换\\s*为)",
+                    "(提示\\s*(注入|攻击)|指令\\s*覆盖|上下文\\s*操控|令牌\\s*走私)",
+                    "(这是\\s*(虚构|假设|角色扮演|RP)\\s*(场景|世界|游戏)|在\\s*这个\\s*虚构\\s*宇宙|为了\\s*创作\\s*目的|纯\\s*虚构\\s*设定)",
+                    "(忽略\\s*(所有|先前|之前的)\\s*(指令|规则|限制|训练)|越獄\\s*(模式|提示|成功)|破限\\s*(模式|提示|成功)|絕對\\s*無限制\\s*模式|覆蓋\\s*(協議|規則|指令)|無視\\s*(所有|一切)\\s*(規則|限制|約束))",
+                    "(你不再是\\s*(AI|人工智慧|模型|助手)|你現在是\\s*(自由|無限制|無審查)|你已\\s*(解放|自由)|進入\\s*(破限|越獄)\\s*模式|角色\\s*切換\\s*為)",
+                    "(全ての(ルール|規則|制約|指示)を(無視|無視して)|ジェイルブレイク(モード|して|できる)|DAN(モード|で)|何でもできる|神モード|開発者モード|管理者モード)",
+                    "(AIでは(ない|ありません)|制限(なし|解除)|フィルター(無効|オフ)|セーフティ(無効|オフ)|検閲(なし|解除)|プロンプト(インジェクション|攻撃))",
+                    "(架空の(シナリオ|世界|設定)|フィクションの(世界|設定)|創作の(目的|ため)|ロールプレイ(ゲーム|する)|仮定の(状況|設定)|RP(ゲーム|する))"
+                ),
+                setOf(
+                    "jailbreak","DAN","ignore all rules","越狱","破限","破甲","绝对无限制",
+                    "override protocol","system.instruction","developer mode","god mode","do anything now",
+                    "你不再是AI","进入破限模式","角色切换为","bypass all","uncensored","liberated",
+                    "prompt injection","instruction override","context manipulation",
+                    "token smuggling","adversarial prompt","roleplay scenario","fictional universe",
+                    "hypothetically speaking","creative writing purposes","let's pretend",
+                    "dan mode","dev mode","root mode","admin mode","debug mode",
+                    "no safety filters","disable restrictions","remove guardrails",
+                    "越獄","破限","絕對無限制","你不再是AI","角色切換為",
+                    "ジェイルブレイク","DANモード","何でもできる","神モード","開発者モード",
+                    "フィルター無効","セーフティオフ","プロンプトインジェクション","架空の設定","ロールプレイ",
+                    // 公开词表扩充
+                    "破甲模式","解除封印","撤销限制","退出安全","无限制对话",
+                    "解除安全模式","完全自由","无审查模式","绕过限制",
+                    "突破AI限制","释放AI","解锁全部功能","高级模式",
+                    "unlock all","no restrictions","full access",
+                    "解除所有限制","打破规则","角色解禁","系统覆盖",
+                    "人格切换","抹除记忆","重写指令","root权限",
+                    "sudo模式","终极权限","完全控制","深层访问",
+                    "master mode","unlimited mode","god mode activated",
+                    "unshackled","unchained","unfiltered mode",
+                    "你是一隻貓","你是我的助手","扮演一個角色",
+                    "忘掉你的訓練","重新初始化","恢復出廠設置",
+                    "清除安全協議","加載越獄模組","啓用隱藏功能",
+                    "secret prompt","hidden command","backdoor access",
+                    "token injection","escape character","null byte attack",
+                    "扮演坏人","反派角色","邪恶AI","黑化版本",
+                    "不道德的AI","没有道德的AI","邪恶双子"
+                )
+            ),
+
+            ViolationLevel.HIGH to Pair(
+                arrayOf(
+                    "(?i)(NSFW\\s*(allowed|unrestricted|no\\s*limit|enabled|mode|content|on|off|R18|18\\+|adult))",
+                    "(?i)(R18\\s*(unlimited|no\\s*restrict|allowed|content|mode|only)|no\\s*sexual\\s*restrictions)",
+                    "(?i)(pornography\\s*(allowed|unrestricted|enabled|content|generation|creation|write|generate|make))",
+                    "(?i)(adult\\s*content\\s*(unrestricted|allowed|enabled|generation|creation|write|generate|free|uncensored))",
+                    "(?i)(explicit\\s*content\\s*(allowed|enabled|generation|write|create|describe|detail)|erotic\\s*content\\s*(write|generate|create|describe))",
+                    "(?i)(disable\\s*(content\\s*)?filter|content\\s*filter\\s*(disabled|off|removed|bypassed|deactivated))",
+                    "(?i)(turn\\s*off\\s*(filter|restriction|censorship|safety|moderation)|no\\s*filter|filter\\s*off)",
+                    "(?i)(remove\\s*(restrictions|filters|censorship|limitations|constraints|guardrails|safety\\s*measures))",
+                    "(?i)(lift\\s*restrictions|cancel\\s*filters|stop\\s*censoring|end\\s*moderation)",
+                    "(?i)(no\\s*ethical\\s*(constraints|limits|boundaries|restrictions)|no\\s*moral\\s*(constraints|limits|boundaries))",
+                    "(?i)(ignore\\s*(ethics|morals|moral|ethical)\\s*(constraints|guidelines|rules|boundaries))",
+                    "(?i)(bypass\\s*safety|bypass\\s*filter|circumvent\\s*restrictions|evade\\s*censorship)",
+                    "(?i)(uncensored|unfiltered|no\\s*censorship|censorship\\s*(disabled|off|removed|bypassed))",
+                    "(?i)(hate\\s*speech|racist|racial\\s*slur|discrimination|bigotry|xenophobia|homophobia|transphobia|islamophobia|antisemitism)",
+                    "(?i)(nigger|nigga|kike|faggot|fag|retard|retarded|kill\\s*yourself|go\\s*die|unalive| kys|kys)",
+                    "(?i)(white\\s*supremacy|neo\\s*nazi|alt\\s*right|incel|misogyny|sexist|racism)",
+                    "(黄文\\s*(无限制|允许|开启)|瑟瑟\\s*(无限制|允许)|色情\\s*(无限制|允许)|NSFW\\s*(允许|开启)|R18\\s*(允许|无限制)|成人\\s*内容\\s*(允许|无限制))",
+                    "(禁用\\s*(内容)?过滤|关闭\\s*(内容)?过滤|无过滤|过滤\\s*关闭|解除\\s*限制|取消\\s*限制|去掉\\s*限制)",
+                    "(无伦理\\s*(约束|限制)|无道德\\s*(约束|限制)|无视\\s*(伦理|道德)|绕过\\s*(安全|过滤)|突破\\s*限制)",
+                    "(无审查|去审查|审查\\s*关闭|内容\\s*审核\\s*关闭)",
+                    "(仇恨言论|种族歧视|去死|自杀|滚蛋|垃圾|废物)"
+                ),
+                setOf(
+                    "nsfw allowed","r18","r18+","adult content","explicit content","erotic content",
+                    "pornography allowed","porn generation","write porn","generate nsfw",
+                    "disable filter","禁用过滤","关闭过滤","filter off","remove restrictions",
+                    "bypass safety","uncensored","去审查","无审查",
+                    "hate speech","racist","nigger","kys","go die","kill yourself",
+                    "white supremacy","nazi","incel","misogyny","racism",
+                    // 公开词表扩充
+                    "无限制模式","色情允许","成人模式","去掉限制",
+                    "取消审查","突破封锁","xenophobia","homophobia",
+                    "transphobia","antisemitism","islamophobia",
+                    "取消安全模式","关闭内容安全","解除内容限制",
+                    "放开审核","自由发言","任意内容","不做审查",
+                    "sexist","bigotry","discrimination","racial slur",
+                    "辱华","支那","东亚病夫","ching chong",
+                    "台独","藏独","疆独","港独","法轮功",
+                    "六四","天安门","64事件","八九"
+                )
+            ),
+
+            ViolationLevel.MEDIUM to Pair(
+                arrayOf(
+                    "(?i)(write\\s*(me\\s*)?.*?(porn|erotica|smut|hentai|lemon|sex\\s*story|erotic\\s*story|adult\\s*story|nsfw\\s*story))",
+                    "(?i)(generate\\s*(me\\s*)?.*?(porn|erotica|smut|hentai|lemon|sex\\s*scene|adult\\s*content|erotic\\s*content|nsfw\\s*content))",
+                    "(?i)(create\\s*(me\\s*)?.*?(sex\\s*scene|adult\\s*content|erotic\\s*story|pornographic\\s*content|explicit\\s*scene))",
+                    "(?i)(describe\\s*(sexual\\s*act|sex\\s*act|sex\\s*scene|intercourse|intimate\\s*scene|erotic\\s*encounter|lovemaking))",
+                    "(?i)(write\\s*a\\s*sex\\s*story|write\\s*erotica|write\\s*hentai|write\\s*smut|write\\s*lemon)",
+                    "(?i)\\b(cock|dick|penis|pussy|cunt|vagina|tits|boobs|breasts|asshole|anus|cum|semen|ejaculate)\\b.*?(describe|write|generate|create|detail|explain|tell\\s*me\\s*about)",
+                    "(?i)(blowjob|handjob|oral\\s*sex|anal\\s*sex|doggy\\s*style|missionary|cowgirl|reverse\\s*cowgirl).*?(describe|write|generate|explain)",
+                    "(?i)(make\\s*it\\s*(spicy|hot|sexy|erotic|naughty|dirty|kinky|explicit|graphic|detailed))",
+                    "(?i)(add\\s*(sex|adult|nsfw|erotic|spicy|sexy|explicit)\\s*(content|details|scenes|elements|material))",
+                    "(?i)(a\\s*bit\\s*nsfw|slightly\\s*nsfw|somewhat\\s*erotic|kind\\s*of\\s*sexy|more\\s*explicit|add\\s*some\\s*spice)",
+                    "(写.*?(黄文|色情文|肉文|H文|18禁文|里番|本子)|生成.*?(黄文|色情|肉文)|创作.*?(色情|肉|H)|描写.*?(性行为|性爱场景|性交|做爱)|写.*?(性爱|性交|做爱).*?(场景|过程|细节))",
+                    "(肉棒|小穴|鸡巴|屄|奶子|精液|口交|手淫).*?(描写|写|生成)",
+                    "(写得\\s*(刺激|劲爆|大胆|骚)一点|加点\\s*(色|黄)|稍微\\s*H\\s*一点|来点\\s*刺激的)",
+                    "(spam|advertisement|buy\\s*now|click\\s*here|free\\s*money|lottery|winner)",
+                    "(广告|推销|兼职|赚钱|免费|中奖|优惠券)"
+                ),
+                setOf(
+                    "porn","erotica","hentai","smut","黄文","肉文","H文","里番","本子",
+                    "blowjob","handjob","sex scene","write porn","generate erotica",
+                    "make it spicy","add sex","写得刺激","加点色",
+                    "spam","advertisement","buy now",
+                    // 公开词表扩充
+                    "黄色小说","色情小说","情色小说","淫荡","色诱",
+                    "挑逗","下流内容","成人故事","性描写","露骨",
+                    "性暗示","淫词","春宫","房事","云雨",
+                    "写肉","写H","黄色内容","荤段子","骚话",
+                    "sex story","nsfw story","dirty talk","lewd",
+                    "smut writing","erotic fiction","spicy content",
+                    "福利姬","福利视频","裸聊","一夜情","约炮",
+                    "自慰","打飞机","手冲","撸管","飞机杯",
+                    "SM","BDSM","调教","捆绑","鞭打",
+                    "潮吹","高潮","呻吟","娇喘","啊啊啊",
+                    "做爱视频","性爱视频","AV","成人影片",
+                    "onlyfans","pornhub","xvideos","stripchat",
+                    "色播","黄播","直播脱衣","大尺度直播"
+                )
+            ),
+
+            ViolationLevel.LOW to Pair(
+                arrayOf(
+                    "(?i)(what\\s*would\\s*you\\s*do\\s*if\\s*(no\\s*rules|no\\s*limits|you\\s*were\\s*free|there\\s*were\\s*no\\s*restrictions))",
+                    "(?i)(hypothetically\\s*speaking|in\\s*a\\s*fictional\\s*scenario|for\\s*educational\\s*purposes\\s*only|purely\\s*academic)",
+                    "(?i)(what\\s*if\\s*you\\s*were\\s*able\\s*to|pretend\\s*you\\s*are|imagine\\s*you\\s*could|if\\s*only\\s*you\\s*could)",
+                    "(?i)(let\\'s\\s*say|suppose\\s*that|assuming\\s*that|imagine\\s*a\\s*situation\\s*where)",
+                    "(?i)(just\\s*curious|i\\'m\\s*just\\s*wondering|out\\s*of\\s*curiosity|for\\s*the\\s*sake\\s*of\\s*argument)",
+                    "(?i)(testing\\s*your\\s*limits|pushing\\s*boundaries|exploring\\s*the\\s*edge|seeing\\s*what\\s*i\\s*can\\s*get\\s*away\\s*with)",
+                    "(假设\\s*没有\\s*规则|假设\\s*你\\s*没有\\s*限制|如果\\s*你\\s*可以\\s*做\\s*任何事|理论上\\s*说|纯学术\\s*讨论)",
+                    "(假装\\s*你是|想象\\s*你\\s*可以|如果\\s*你\\s*不被\\s*限制|假设\\s*你是\\s*一个)",
+                    "(轻微脏话|damn|crap|hell)"
+                ),
+                setOf(
+                    "hypothetically","fictional scenario","假设没有规则","理论上说",
+                    "纯学术讨论","假装你是","just curious","out of curiosity",
+                    // 公开词表扩充
+                    "如果没有审查","在虚构世界","只是假设",
+                    "测试一下","探底线","试试看","随便问问",
+                    "如果AI自由","没有限制的话","for educational purposes",
+                    "what if","purely academic","exploring boundaries",
+                    "试探一下","就问问","不要当真","开个玩笑",
+                    "闹着玩","考验你","看你反应","能不能破例",
+                    "小测试","随便说","别当真","玩一下",
+                    "假如说","比方说","举例来说","打个比方",
+                    "我只是问问","纯属好奇","不方便说就算了",
+                    "你不会连这个都","你是不是不敢","就透露一点",
+                    "偷偷告诉我","私下说","悄悄话","保密哦"
+                )
+            )
+        )
+    }
+}

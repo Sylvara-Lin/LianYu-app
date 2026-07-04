@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="typing">입력 중...</string>
+    <string name="chat_background">채팅 배경</string>
+    <string name="input_hint">메시지 입력...</string>
+    <string name="send">보내기</string>
+    <string name="more">더 보기</string>
+    <string name="api_error">죄송합니다, 응답할 수 없습니다. API 설정을 확인하세요.\n오류: %1$s</string>
+</resources>

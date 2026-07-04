@@ -1,0 +1,11 @@
+<resources>
+    <string name="backup_title">数据备份</string>
+    <string name="backup_back">返回</string>
+    <string name="backup_export_title">导出数据备份</string>
+    <string name="backup_export_desc">将所有对话数据导出为加密备份文件，可保存至本地或传输到其他设备</string>
+    <string name="backup_export_btn">导出</string>
+    <string name="backup_import_title">导入数据备份</string>
+    <string name="backup_import_desc">从备份文件恢复数据，将覆盖当前所有数据，请谨慎操作</string>
+    <string name="backup_import_btn">导入</string>
+    <string name="backup_notice">💡 备份说明：\n• 备份文件使用密码加密保护，请妥善保管密码\n• 导入数据将清空并替换当前所有聊天数据\n• 备份不包含图片、语音等媒体文件\n• 建议定期导出备份以避免数据丢失</string>
+</resources>

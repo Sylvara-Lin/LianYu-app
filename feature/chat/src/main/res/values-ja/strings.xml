@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="typing">入力中...</string>
+    <string name="chat_background">チャット背景</string>
+    <string name="input_hint">メッセージを入力...</string>
+    <string name="send">送信</string>
+    <string name="more">もっと</string>
+    <string name="api_error">申し訳ありません、返信できません。API設定を確認してください。\nエラー: %1$s</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="memory_management">Memory</string>
+    <string name="core_memory">Core Memory</string>
+    <string name="temp_memory">Temporary Memory</string>
+    <string name="select_companion_hint">Select a companion to view memories</string>
+    <string name="all">All</string>
+    <string name="no_core_memory">No core memory yet\nChat more to build memories</string>
+    <string name="no_temp_memory">No temporary memory yet\nMemories are recorded after chatting</string>
+    <string name="importance">Importance %1$d%%</string>
+    <string name="context">Context: %1$s</string>
+    <string name="you">You: %1$s</string>
+    <string name="no_companions">No companions yet</string>
+    <string name="create_first">Create or add one first</string>
+    <string name="fact">Fact</string>
+    <string name="emotion">Emotion</string>
+    <string name="preference">Preference</string>
+    <string name="event">Event</string>
+    <string name="habit">Habit</string>
+    <string name="relationship">Relationship</string>
+</resources>
