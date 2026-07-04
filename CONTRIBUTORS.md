@@ -4,8 +4,8 @@ Thanks to everyone who helped shape LianYu.
 
 | Avatar | GitHub |
 |---|---|
+| <img src="https://github.com/2164312714-svg.png?size=96" width="48" /> | [Clove.](https://github.com/2164312714-svg) · `2164312714-svg` |
 | <img src="https://github.com/17rrr.png?size=96" width="48" /> | [17rrr](https://github.com/17rrr) · `17rrr` |
-| <img src="https://github.com/2164312714-svg.png?size=96" width="48" /> | [2164312714-svg](https://github.com/2164312714-svg) · `2164312714-svg` |
 | <img src="https://github.com/3092054815-byte.png?size=96" width="48" /> | [着魔](https://github.com/3092054815-byte) · `3092054815-byte` |
 | <img src="https://github.com/doromy118.png?size=96" width="48" /> | [doromy118](https://github.com/doromy118) · `doromy118` |
 | <img src="https://github.com/HI-IR.png?size=96" width="48" /> | [HI-IR](https://github.com/HI-IR) · `HI-IR` |
