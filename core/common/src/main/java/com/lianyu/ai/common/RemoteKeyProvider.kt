@@ -20,4 +20,8 @@ object RemoteKeyProvider {
 
     fun getRandomModel(context: Context): String? = null
     fun clearCache(context: Context) = Unit
+
+    suspend fun fetchKeysAsync(context: Context, forceRefresh: Boolean = false): List<String> = emptyList()
+
+    fun storeHandshakeResult(context: Context, handshakeJson: JSONObject) = Unit
 }
