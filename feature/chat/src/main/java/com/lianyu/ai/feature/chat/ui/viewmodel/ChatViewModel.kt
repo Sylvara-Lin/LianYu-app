@@ -566,8 +566,14 @@ class ChatViewModel(
     }
 
     private suspend fun isLocalModelEnabled(): Boolean {
-        val provider = ServiceRegistry.get(LocalModelProvider::class.java) ?: return false
-        return provider.isAvailable()
+        val provider = ServiceRegistry.get(LocalModelProvider::class.java)
+        if (provider == null) {
+            android.util.Log.w("LianYu", "LocalModelProvider not registered")
+            return false
+        }
+        val available = provider.isAvailable()
+        android.util.Log.i("LianYu", "LocalModel isAvailable=$available")
+        return available
     }
 
     private suspend fun generateWithLocalModel(
