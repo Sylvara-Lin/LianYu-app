@@ -92,6 +92,25 @@ class LocalAiService private constructor(private val context: Context) {
         }
     }
 
+    private fun tryCreateEngine(modelFile: java.io.File, backend: Backend): Engine? {
+        return try {
+            Engine(
+                EngineConfig(
+                    modelPath = modelFile.absolutePath,
+                    backend = backend,
+                    cacheDir = context.cacheDir.absolutePath,
+                    maxNumTokens = 1024
+                )
+            ).also { it.initialize() }
+        } catch (e: UnsatisfiedLinkError) {
+            Log.w(TAG, "Engine init failed (native lib)", e)
+            null
+        } catch (e: Exception) {
+            Log.w(TAG, "Engine init failed: ${e.message}", e)
+            null
+        }
+    }
+
     fun setActiveModel(model: LocalModel) {
         _activeModel = model
     }
@@ -159,29 +178,24 @@ class LocalAiService private constructor(private val context: Context) {
             engine?.close()
             engine = null
             engineModelId = null
-            try {
-                Engine(
-                    EngineConfig(
-                        modelPath = modelFile.absolutePath,
-                        backend = Backend.CPU(),
-                        cacheDir = context.cacheDir.absolutePath
-                    )
-                ).also {
-                    it.initialize()
-                    engine = it
+
+            val eng = tryCreateEngine(modelFile, Backend.GPU())
+            if (eng != null) {
+                engine = eng
+                engineModelId = model.id
+                eng
+            } else {
+                val fallback = tryCreateEngine(modelFile, Backend.CPU(2))
+                if (fallback != null) {
+                    engine = fallback
                     engineModelId = model.id
+                    fallback
+                } else {
+                    persistDisable(context)
+                    throw IllegalStateException(
+                        "Local model engine failed to initialize."
+                    )
                 }
-            } catch (e: UnsatisfiedLinkError) {
-                persistDisable(context)
-                Log.e(TAG, "UnsatisfiedLinkError loading litertlm native library", e)
-                throw IllegalStateException(
-                    "Local model native library failed to load. It has been disabled for this device."
-                )
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to initialize litertlm engine", e)
-                throw IllegalStateException(
-                    "Failed to initialize local model engine: ${e.message}"
-                )
             }
         }
 

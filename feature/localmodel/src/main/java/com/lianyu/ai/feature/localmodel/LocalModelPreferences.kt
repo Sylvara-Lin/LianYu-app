@@ -8,6 +8,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.lianyu.ai.common.localmodel.LocalModelStateManager
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 private val Context.localModelSelectionDataStore by preferencesDataStore(name = "local_model_selection")
@@ -17,12 +19,14 @@ class LocalModelPreferences(private val context: Context) {
     private val selectionDataStore = context.applicationContext.localModelSelectionDataStore
     private val selectedModelIdKey = stringPreferencesKey("selected_model_id")
 
-    val state: Flow<com.lianyu.ai.common.localmodel.LocalModelPreferencesState> =
-        LocalModelStateManager.state(context)
-
     val selectedModelId: Flow<String> = selectionDataStore.data.map { prefs ->
         prefs[selectedModelIdKey] ?: "gemma_4_e2b"
     }
+
+    val state: Flow<com.lianyu.ai.common.localmodel.LocalModelPreferencesState> =
+        selectedModelId.flatMapLatest { modelId ->
+            LocalModelStateManager.state(context, modelId)
+        }
 
     suspend fun selectModel(modelId: String) {
         selectionDataStore.edit { prefs ->
@@ -50,14 +54,17 @@ class LocalModelPreferences(private val context: Context) {
     }
 
     suspend fun setEnabled(enabled: Boolean) {
-        LocalModelStateManager.setEnabled(context, enabled)
+        val modelId = selectedModelId.first()
+        LocalModelStateManager.setEnabled(context, modelId, enabled)
     }
 
     suspend fun setPendingAutoEnable(pending: Boolean) {
-        LocalModelStateManager.setPendingAutoEnable(context, pending)
+        val modelId = selectedModelId.first()
+        LocalModelStateManager.setPendingAutoEnable(context, modelId, pending)
     }
 
     suspend fun setDownloadId(downloadId: Long?) {
-        LocalModelStateManager.setDownloadId(context, downloadId)
+        val modelId = selectedModelId.first()
+        LocalModelStateManager.setDownloadId(context, modelId, downloadId)
     }
 }

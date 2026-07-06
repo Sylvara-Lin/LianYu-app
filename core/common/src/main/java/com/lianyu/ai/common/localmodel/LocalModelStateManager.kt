@@ -17,46 +17,44 @@ data class LocalModelPreferencesState(
 )
 
 object LocalModelStateManager {
-    private object Keys {
-        val gemmaEnabled = booleanPreferencesKey("gemma_4_e2b_enabled")
-        val pendingAutoEnable = booleanPreferencesKey("gemma_4_e2b_pending_auto_enable")
-        val downloadId = longPreferencesKey("gemma_4_e2b_download_id")
-    }
+    private fun enabledKey(modelId: String) = booleanPreferencesKey("${modelId}_enabled")
+    private fun pendingKey(modelId: String) = booleanPreferencesKey("${modelId}_pending_auto_enable")
+    private fun downloadIdKey(modelId: String) = longPreferencesKey("${modelId}_download_id")
 
-    fun isLocalModelEnabled(context: Context): Flow<Boolean> {
+    fun isLocalModelEnabled(context: Context, modelId: String = "gemma_4_e2b"): Flow<Boolean> {
         return context.applicationContext.localModelDataStore.data.map { prefs ->
-            prefs[Keys.gemmaEnabled] ?: false
+            prefs[enabledKey(modelId)] ?: false
         }
     }
 
-    fun state(context: Context): Flow<LocalModelPreferencesState> {
+    fun state(context: Context, modelId: String = "gemma_4_e2b"): Flow<LocalModelPreferencesState> {
         return context.applicationContext.localModelDataStore.data.map { prefs ->
             LocalModelPreferencesState(
-                isGemmaEnabled = prefs[Keys.gemmaEnabled] ?: false,
-                pendingAutoEnable = prefs[Keys.pendingAutoEnable] ?: false,
-                downloadId = prefs[Keys.downloadId]
+                isGemmaEnabled = prefs[enabledKey(modelId)] ?: false,
+                pendingAutoEnable = prefs[pendingKey(modelId)] ?: false,
+                downloadId = prefs[downloadIdKey(modelId)]
             )
         }
     }
 
-    suspend fun setEnabled(context: Context, enabled: Boolean) {
+    suspend fun setEnabled(context: Context, modelId: String, enabled: Boolean) {
         context.applicationContext.localModelDataStore.edit { prefs ->
-            prefs[Keys.gemmaEnabled] = enabled
+            prefs[enabledKey(modelId)] = enabled
         }
     }
 
-    suspend fun setPendingAutoEnable(context: Context, pending: Boolean) {
+    suspend fun setPendingAutoEnable(context: Context, modelId: String, pending: Boolean) {
         context.applicationContext.localModelDataStore.edit { prefs ->
-            prefs[Keys.pendingAutoEnable] = pending
+            prefs[pendingKey(modelId)] = pending
         }
     }
 
-    suspend fun setDownloadId(context: Context, downloadId: Long?) {
+    suspend fun setDownloadId(context: Context, modelId: String, downloadId: Long?) {
         context.applicationContext.localModelDataStore.edit { prefs ->
             if (downloadId == null) {
-                prefs.remove(Keys.downloadId)
+                prefs.remove(downloadIdKey(modelId))
             } else {
-                prefs[Keys.downloadId] = downloadId
+                prefs[downloadIdKey(modelId)] = downloadId
             }
         }
     }
